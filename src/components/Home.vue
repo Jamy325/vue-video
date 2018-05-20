@@ -28,7 +28,7 @@
                         <div>
                             <div class="starList" :style="{'background-position-y':-15*(10-list.star).toFixed(0)+'px'}"></div>
                             <span>{{list.star}}</span>
-                        </div> 
+                        </div>
                     </router-link>
                 </li>
             </ul>
@@ -46,7 +46,7 @@
                         <div>
                             <div class="starList" :style="{'background-position-y':-15*(10-list.star).toFixed(0)+'px'}"></div>
                             <span>{{list.star}}</span>
-                        </div> 
+                        </div>
                     </router-link>
                 </li>
             </ul>
@@ -65,7 +65,7 @@
                             <div class="starList" :style="{'background-position-y':-15*(10-list.star).toFixed(0)+'px'}"></div>
                             <span>{{list.star}}</span>
                         </div>
-                    </router-link> 
+                    </router-link>
                 </li>
             </ul>
         </section>
@@ -82,8 +82,8 @@
                         <div>
                             <div class="starList" :style="{'background-position-y':-15*(10-list.star).toFixed(0)+'px'}"></div>
                             <span>{{list.star}}</span>
-                        </div> 
-                    </router-link> 
+                        </div>
+                    </router-link>
                 </li>
             </ul>
         </section>
@@ -127,9 +127,9 @@ export default {
         ]),
     },
     created () {
-        
+
         if (this.videoData != null) {
-            this.lists = this.videoData 
+            this.lists = this.videoData
         }else{
            this.initData()
         }
@@ -140,11 +140,12 @@ export default {
     },
     methods:{
         initData () {
-            this.loading = true
+            this.loading = true;
+          setTimeout(()=>{
+            this.loading = false;
+          },500)
             initHome().then(res =>  {
-                setTimeout(()=>{
-                    this.loading = false;
-                },500)
+
                 let list = res.data
                 this.lists = list
                 this.$store.dispatch('initVideoData',{
@@ -154,16 +155,16 @@ export default {
                 this.$toast({
                     icon: 'fail',
                     message: e.message
-                }) 
-            })  
+                })
+            })
         },
         getJsonLength(jsonData){
-            var jsonLength = 0;  
-            for(var item in jsonData){  
-                jsonLength++;  
-            }  
-            return jsonLength;  
-        }  
+            var jsonLength = 0;
+            for(var item in jsonData){
+                jsonLength++;
+            }
+            return jsonLength;
+        }
     }
 }
 </script>

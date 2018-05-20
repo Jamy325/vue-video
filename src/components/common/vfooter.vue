@@ -1,13 +1,24 @@
 <template>
     <section class="footer">
-        <router-link to="/">
-            <i class="iconfont icon-dianying"></i>
-            <span>主页</span>
+        <router-link to="/asset">
+            <i class="iconfont icon-asset"></i>
+            <span>资产统计</span>
         </router-link>
-        <router-link to="/me">
-            <i class="iconfont icon-my1"></i>
-            <span>我</span>
-        </router-link>
+
+      <router-link to="/market">
+        <i class="iconfont icon-market"></i>
+        <span>市场交易</span>
+      </router-link>
+
+      <router-link to="/yujing">
+        <i class="iconfont icon-yujing"></i>
+        <span>预警提醒</span>
+      </router-link>
+
+      <router-link to="/me">
+          <i class="iconfont icon-me"></i>
+          <span>个人中心</span>
+      </router-link>
     </section>
 </template>
 
@@ -36,7 +47,7 @@ export default {
         display: -o-flex;
         display: flex;
         justify-content: center;
-        background: #fff;
+        background: #4D4D4D;
         z-index: 9999;
         border-top:1px solid #a09898;
         a{
@@ -44,22 +55,22 @@ export default {
             justify-content: center;
             display:flex;
             flex-direction: column;
-            align-items: center; 
+            align-items: center;
             padding:0.05rem 0;
             &:active{
             background: rgba(0,0,0,0.1)
         }
         span{
-            color: #333
+            color: #ffffff;
         }
     }
     .icon-dianying,.icon-my1{
         font-size: 28px;
-        color: #333
+        color: #ffffff;
     }
     .router-link-exact-active i,.router-link-exact-active span{
         color: #4ebf60 !important
     }
-  } 
+  }
 
 </style>

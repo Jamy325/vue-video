@@ -6,6 +6,9 @@ import More from '@/components/More'
 import Me from '@/components/Me'
 import Login from '@/components/Login'
 import Detail from '@/components/Detail'
+import Register from '@/components/Register'
+import AppSetting from '@/components/AppSetting'
+import Asset from '@/components/Asset'
 // const Home = r => require.ensure([], () => r(require('../components/Home')), 'Home')
 // const More = r => require.ensure([], () => r(require('../components/More')), 'More')
 // const Me = r => require.ensure([], () => r(require('../components/Me')), 'Me')
@@ -68,11 +71,39 @@ export default new Router({
             name: 'login',
             component: Login
         },
+      {
+        path: '/register',
+        name: 'resister',
+        component: Register
+      },
         {
             path: '/me',
             name: 'me',
             component: Me,
-        }
+          meta: {
+            keepAlive: true // 需要被缓存
+          }
+        },
+      {
+        path: '/asset',
+        name: 'asset',
+        component: Asset,
+      },
+      {
+        path: '/market',
+        name: 'market',
+        component: Me,
+      },
+      {
+        path: '/yujing',
+        name: 'yujing',
+        component: Me,
+      },
+      {
+        name:'AppSetting',
+        path: '/me/AppSetting',
+        component: AppSetting
+      }
     ],
     scrollBehavior (to, from, savedPosition) {
         return { x: 0, y: 0 }

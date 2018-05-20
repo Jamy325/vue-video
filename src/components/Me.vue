@@ -42,65 +42,33 @@
         </section>
         <section class="like_list list">
             <h3>
-                <i class="iconfont icon-msnui-love"></i>
-                喜欢<span>({{ likeLengthOne }})</span>
+              <router-link to="/me/AppSetting">
+                <i class="iconfont icon-setting"></i>
+                <span style="margin-left: 10px;font-size: 0.5rem">应用设置 </span>
+              </router-link>
             </h3>
-            <ul>
-                <li :key="likeList.id" v-for="likeList in likeLists[0]">
-                    <router-link :to="'/video/'+likeList.uid">
-                        <img v-lazy="baseUrl+likeList.videoImg" alt="">
-                        <h4>{{likeList.videoName}}</h4>
-                        <div>
-                            <div class="starList" :style="{'background-position-y':-15*(10-likeList.star).toFixed(0)+'px'}"></div>
-                            <span>{{likeList.star}}</span>
-                       </div>
-                    </router-link>
-                </li>
-            </ul>
+
         </section>
         <section class="dislike_list list">
             <h3>
-                <i class="iconfont icon-buxihuan"></i>
-                不喜欢<span>({{likeLengthTwo}})</span>
+              <router-link to="/me">
+                <i class="iconfont icon-share"></i>
+                <span style="margin-left: 10px;font-size: 0.5rem">分享hitoken </span>
+              </router-link>
+
             </h3>
-            <ul>
-                <li :key="likeList.id" v-for="likeList in likeLists[1]">
-                    <router-link :to="'/video/'+likeList.uid">
-                        <img v-lazy="baseUrl+likeList.videoImg" alt="">
-                        <h4>{{likeList.videoName}}</h4>
-                        <div>
-                            <div class="starList" :style="{'background-position-y':-15*(10-likeList.star).toFixed(0)+'px'}"></div>
-                            <span>{{likeList.star}}</span>
-                        </div>
-                    </router-link>  
-                </li>
-            </ul>     
+
         </section>
         <section class="comment list">
             <h3>
-                <i class="iconfont icon-pinglun1"></i>
-                评论<span>({{comments.length}})</span>
+              <router-link to="/me">
+                <i class="iconfont icon-about"></i>
+                <span style="margin-left: 10px;font-size: 0.5rem">关于我们 </span>
+              </router-link>
             </h3>
-            <ul>
-                <li :key="comment.id"  v-for="(comment,index) in comments">
-                    <section 
-                     @touchstart.stop.prevent="touchStart($event)" 
-                     @touchmove.stop.prevent="touchMove($event)" 
-                     @touchend.stop.prevent="touchEnd($event)" 
-                     class="commentWrap">
-                        <h5>影片：{{comment.videoName}}</h5>
-                        <section>
-                            <span>评论：</span>
-                            <p>{{comment.content}}</p>
-                        </section>
-                        <div class="time">{{comment.date}}</div>
-                    </section>
-                    <div class="delete" @click="deleteComment(comment.id,userName,index,$event)">删除</div>
-                </li> 
-            </ul>
         </section>
     </section>
-  </section>  
+  </section>
 </template>
 
 <script>
@@ -133,8 +101,8 @@ export default {
         ...mapState([
             'meCommentDatas',
         ]),
-       
-      
+
+
     },
     mounted () {
         this.userName = localStorage.getItem('user');
@@ -142,7 +110,7 @@ export default {
     },
     watch: {
         // 如果路由有变化，会再次执行该方法
-        '$route': 'initData', 
+        '$route': 'initData',
     },
     directives: {
         focus: {
@@ -167,12 +135,12 @@ export default {
                     let data = res.data
                     this.initMeCommentData(data)
                     this.comments = data
-            }).catch(e => {   
-                this.loading = false;                
+            }).catch(e => {
+                this.loading = false;
                 this.$toast({
                     icon:'fail',
                     message:e.message
-                }) 
+                })
             })
             // 获取喜欢不喜欢数据
             meLike(userName).then(res =>  {
@@ -185,7 +153,7 @@ export default {
                 this.likeLengthTwo = data[1].length
            })
            .catch(e => {
-                this.loading = false;                               
+                this.loading = false;
                 this.$toast({
                     icon:'fail',
                     message:e.message
@@ -193,17 +161,17 @@ export default {
            })
            getAvator(userName).then(data => {
                this.avator = data.avator
-                localStorage.setItem('avator',data.avator);               
+                localStorage.setItem('avator',data.avator);
             }).catch(e=>{
                 console.log(e)
-            })      
+            })
         },
         // 登出
         logout () {
             this.$toast({
                 icon:'success',
                 message:'登出成功'
-            }) 
+            })
             localStorage.clear()
             setTimeout(()=>{
                 this.$router.push({path:'/'})
@@ -217,7 +185,7 @@ export default {
                 this.$toast({
                     icon:'success',
                     message:'删除成功'
-                }) 
+                })
                 el.parentNode.style.height = 0;
                 el.parentNode.style.borderTop = 'none';
                 this.$nextTick(() => {
@@ -229,8 +197,8 @@ export default {
                 this.$toast({
                     icon:'fail',
                     message:e.message
-                }) 
-                if(e.code == 404) setTimeout(()=>{this.$router.push({path:'/login'})},1500);localStorage.clear()                   
+                })
+                if(e.code == 404) setTimeout(()=>{this.$router.push({path:'/login'})},1500);localStorage.clear()
 
             })
         },
@@ -272,7 +240,7 @@ export default {
             if (this.scroll < 0 && this.scroll >= -1) {
                 el.style.transform = 'translate('+ 0 +'rem)';
                 el.style.webkitTransform = 'translate('+ 0 +'rem)';
-            } 
+            }
             if (this.scroll < -1) {
                 el.style.transform = 'translate('+ -1.5 +'rem)';
                 el.style.webkitTransform = 'translate('+ -1.5 +'rem)';
@@ -281,7 +249,7 @@ export default {
         },
         // 上传头像
         upload(){
-            var upload = document.querySelector('#upload')  
+            var upload = document.querySelector('#upload')
             var _that = this
             upload.addEventListener('change', function() {
                 if (this.files.length != 0) {
@@ -295,7 +263,7 @@ export default {
                     //     _that.$toast({
                     //         icon:'fail',
                     //         message:'超过512Kb了哟!'
-                    //     }) 
+                    //     })
                     //     return
                     // }
                     reader.onload = function(e) {
@@ -313,15 +281,15 @@ export default {
                                 _that.$toast({
                                     icon:'success',
                                     message:'上传成功'
-                                }) 
+                                })
                                 localStorage.setItem('avator',data.avator);
                                 _that.nowUploadAvator = data.avator;
                             }).catch(e=>{
                                 _that.$toast({
                                     icon:'fail',
                                     message:e.message
-                                }) 
-                                if(e.code == 404) setTimeout(()=>{_that.$router.push({path:'/login'})},1500);localStorage.clear()                      
+                                })
+                                if(e.code == 404) setTimeout(()=>{_that.$router.push({path:'/login'})},1500);localStorage.clear()
                             })
 					    }
 					    image.src = e.target.result
@@ -342,7 +310,7 @@ export default {
                 this.$toast({
                     icon:'fail',
                     message:'请修改名称！'
-                }) 
+                })
                 this.defaultName = true;
                 return
             }
@@ -351,20 +319,20 @@ export default {
                    this.$toast({
                         icon:'success',
                         message:'修改成功'
-                    }) 
+                    })
                     document.cookie = `token=${res.token};max-age=${30*24*60*60*1000}`
                     console.log(document.cookie)
                    localStorage.setItem('user',modelData)
                    this.userName = modelData
                    this.defaultName = true;
-               
+
             }).catch(e=>{
                 this.$toast({
                     icon:'fail',
                     message:e.message
-                }) 
+                })
                 this.defaultName = true;
-                if(e.code == 404) setTimeout(()=>{this.$router.push({path:'/login'})},1500);localStorage.clear()                   
+                if(e.code == 404) setTimeout(()=>{this.$router.push({path:'/login'})},1500);localStorage.clear()
             })
         },
         // 显示原来的名字，即隐藏修改用户名输入框
@@ -377,5 +345,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'src/style/me';  
+@import 'src/style/me';
 </style>

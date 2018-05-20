@@ -16,4 +16,6 @@ export default {
 
 <style lang="scss" >
 @import './src/style/reset.scss';
+@import './src/style/common.scss';
+
 </style>

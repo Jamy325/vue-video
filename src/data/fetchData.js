@@ -1,8 +1,8 @@
 import axios from 'axios'
-export const url = 'http://vue.wclimb.site';
+export const url = 'http://60.205.230.45:8080';
 // export const url = 'http://localhost:3000';
 let $axios = axios.create({
-  baseURL: url + '/vi/',
+  baseURL: url + '/',
 });
 function getCookie(name) {
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
@@ -18,9 +18,6 @@ function $fetch(method,url,data){
           method,
           url,
           data:data,
-          headers:{
-              token: getCookie('token')
-          }
         }).then(res=>{
             let body = res.data
             if (body.code == 200 || body.code == 201) {
@@ -36,13 +33,16 @@ function $fetch(method,url,data){
 }
 
 // 首页初始化数据
-export const initHome = () => $fetch('get', 'list')
+export const initHome = () => $fetch('get', '/')
 
 // 验证码
-export const yzmChange = () => $fetch('get','getYzm')
+export const yzmChange = () => $fetch('get','/pic')
 
-// 注册登录
-export const signin = (userName, password) => $fetch('post','signin', {userName,password})
+// 注册
+export const ajax_signin = (username, password, code, smscode) => $fetch('post','/login', {username,password, code, smscode})
+
+export const ajax_regist = (data) => $fetch('post','/login/register', data);
+
 
 // 个人评论
 export const meComment = (userName) => $fetch('post', 'getUserComment', {userName})

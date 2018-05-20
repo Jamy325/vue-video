@@ -1,6 +1,6 @@
 html {
-    color: #000;
-    background: #fff;
+    color: #ffffff;
+    background: #1D1D1D;
     overflow-y: scroll;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%
@@ -159,7 +159,7 @@ input[type=submit] {
 
 body {
     font-size: 12px;
-    height: 100%;   
+    height: 100%;
 }
 
 .icon {
@@ -204,6 +204,9 @@ body {
 .icon-shibai{
     color: rgb(250,84,84);
 }
+
+
+
 .starList{
     height: 15px;
     width: 75px;
@@ -277,5 +280,5 @@ body {
 
 .aniDialog {
   animation: tipMove .4s;
-  
+
 }

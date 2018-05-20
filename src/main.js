@@ -9,11 +9,14 @@ import VueLazyload from 'vue-lazyload'
 import Toast from './components/common/Toast.js';
 import promise from 'es6-promise';
 
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 promise.polyfill();
 Vue.use(Toast);
 Vue.use(VueLazyload, {
   loading: 'http://www.wclimb.site/images/imgLoading.svg'
 })
+Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
 new Vue({

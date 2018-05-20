@@ -1,10 +1,14 @@
 <template>
     <main>
-        <vfooter></vfooter>
         <section class="main_wrap">
+          <section>
+            <router-link to="/login">
+              <div class="icon-back"></div>
+            </router-link>
+          </section>
+
             <section class="user_title">
-              <div class="login">登陆</div>
-              <router-link class="register" to="/register"> 注册 </router-link>
+              <div class="login">注册</div>
             </section>
 
             <section class="user">
@@ -12,20 +16,28 @@
                     <div class="input">
                         <div class="input_wrap">
                             <i class="iconfont icon-name"></i>
-                            <input type="text" v-model.trim="userName" @keyup.enter="signin" name="userName" placeholder="用户名">
+                            <input type="text" v-model.trim="username" @keyup.enter="regist" name="username" placeholder="请输入手机号">
                         </div>
                         <div class="input_wrap">
                             <i class="iconfont icon-mima1"></i>
-                            <input type="password" v-model="password" @keyup.enter="signin" name="password" placeholder="密码">
+                            <input type="password" v-model="pwd" @keyup.enter="regist" name="pwd" placeholder="请输入密码">
                         </div>
+                      <div class="input_wrap">
+                        <i class="iconfont icon-mima1"></i>
+                        <input type="password" v-model="rpwd" @keyup.enter="regist" name="rpwd" placeholder="再次输入密码">
+                      </div>
                         <div class="input_wrap">
                             <i class="iconfont icon-yanzhengma1"></i>
-                            <input type="text" v-model="yzm" @keyup.enter="signin" name="yzm" placeholder="验证码">
-                            <img @click="changYzm" :src="url" alt="">
-                            <!-- <p>点击更换</p> -->
+                            <input type="text" v-model="invetecode" @keyup.enter="regist" name="invetecode" placeholder="邀请码(可选)">
                         </div>
+
+                      <div class="input_wrap">
+                        <i class="iconfont icon-yanzhengma1"></i>
+                        <input type="text" v-model="code" @keyup.enter="regist" name="code" placeholder="验证码">
+                        <img @click="changYzm" :src="url" alt="">
+                      </div>
                     </div>
-                    <div class="submit" @click="signin">立即登录</div>
+                    <div class="submit" @click="regist">立即注册</div>
                </form>
             </section>
         </section>
@@ -35,20 +47,20 @@
 <script>
 import vfooter from './common/vfooter.vue'
 import {mapActions,mapState} from 'vuex'
-import { ajax_signin , yzmChange, checkUser,url } from '../data/fetchData.js'
+import { ajax_regist , yzmChange, checkUser,url } from '../data/fetchData.js'
 export default {
-    name: 'login',
+    name: 'Register',
     components:{
-        vfooter,
     },
     data () {
         return {
             lists: '',
             loading: false,
-            userName: '',
-            password: '',
-            yzm: '',
-            yzmTest: '',
+            username: '',
+            pwd: '',
+            rpwd: '',
+            invetecode: '',
+            code:'',
             url: ''
         }
     },
@@ -63,31 +75,34 @@ export default {
         this.changYzm()
     },
     methods:{
-        // 登录
-        signin(){
-            if (this.userName === '' || this.password === '') {
-                this.$toast({
-                    icon:'fail',
-                    message:'用户名/密码不能为空'
-                })
-                return
+        // 注册
+      regist(){
+            var error = '';
+            do{
+                if (this.userName == "") error = "手机号不能为空";
+                if (this.pwd == "") error = "密码不能为空";
+                if (this.pwd != this.rpwd) error = "密码不匹配";
+
+            }while(0);
+
+            if (error !=""){
+              this.$toast({
+                icon:'fail',
+                message:'用户名/密码不能为空'
+              })
+              return
             }
-          ajax_signin(this.userName,this.password).then(data => {
+
+        ajax_regist({username:this.username, pwd:this.pwd, rpwd:this.pwd, code:this.code, initcode:this.initcode}).then(data => {
                 // 用户存在
                 if (data.code == 200) {
                     this.$toast({
                         icon:'success',
-                        message:'登录成功'
+                        message:'注册成功'
                     })
-                    this.$store.dispatch('createUser',{
-                        userName:this.userName
-                    })
-                    document.cookie = `token=${data.token};max-age=${30*24*60*60*1000}`
-                    // console.log(document.cookie)
-                    localStorage.setItem('user',this.userName)
-                    localStorage.setItem('avator',data.avator)
+
                     setTimeout(()=>{
-                        this.$router.push({path:'/me'})
+                        this.$router.push({path:'/login'})
                     },1000)
                 }
             }).catch(e=>{
@@ -113,7 +128,7 @@ export default {
 <style lang="scss" scoped>
   .login{
     font-family: '宋体';
-    font-size: 48px;
+    font-size: 30px;
     color: #1ABC9C;
     letter-spacing: 0;
     margin-left: 10px ;
@@ -129,10 +144,7 @@ export default {
   }
 
 .main_wrap{
-    position: absolute;
-    top: 35%;
-    width: 100%;
-    transform: translateY(-55%)
+    border: 1px solid #ace;
 }
 .user_title{
     display:flex;
