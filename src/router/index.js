@@ -9,6 +9,9 @@ import Detail from '@/components/Detail'
 import Register from '@/components/Register'
 import AppSetting from '@/components/AppSetting'
 import Asset from '@/components/Asset'
+import AssetList from '@/components/AssetList'
+import AssetAdd from '@/components/AssetAdd'
+
 // const Home = r => require.ensure([], () => r(require('../components/Home')), 'Home')
 // const More = r => require.ensure([], () => r(require('../components/More')), 'More')
 // const Me = r => require.ensure([], () => r(require('../components/Me')), 'Me')
@@ -103,7 +106,17 @@ export default new Router({
         name:'AppSetting',
         path: '/me/AppSetting',
         component: AppSetting
-      }
+      },
+      {
+        path: '/assetlist',
+        name: 'assetlist',
+        component: AssetList,
+      },
+      {
+        path: '/assetadd',
+        name: 'assetadd',
+        component: AssetAdd,
+      },
     ],
     scrollBehavior (to, from, savedPosition) {
         return { x: 0, y: 0 }

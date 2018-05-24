@@ -6,7 +6,7 @@
           资产统计
         </h1>
 
-        <router-link to="/me" slot="nextBtn">
+        <router-link to="/assetlist" slot="nextBtn">
           <div class="icon-next"></div>
         </router-link>
       </title-bar>

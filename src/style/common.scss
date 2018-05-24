@@ -97,6 +97,11 @@
   margin-left: 10px;
 }
 
+.icon-add{
+  content: url('assets/add@2x.png');
+  margin-right: 20px;
+}
+
 .icon-next {
   content: url('assets/back@2x.png');
   transform:rotate(180deg);
@@ -105,4 +110,8 @@
   -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
   -o-transform:rotate(180deg); 	/* Opera */
   margin-right: 10px;
+}
+
+input{
+  background: transparent;
 }
