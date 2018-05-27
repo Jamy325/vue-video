@@ -48,11 +48,11 @@
               </el-form-item>
 
               <el-form-item label="API Key">
-                <el-input  type="textarea" :rows="4" v-model="formInline.key" placeholder="请填写资产标题" ></el-input>
+                <el-input  type="textarea" :rows="4" v-model="formInline.key" placeholder="请填写API Key" ></el-input>
               </el-form-item>
 
               <el-form-item label="Secret">
-                <el-input  type="textarea" :rows="4" v-model="formInline.secret" placeholder="请填写资产标题" ></el-input>
+                <el-input  type="textarea" :rows="4" v-model="formInline.secret" placeholder="请填写Sercet" ></el-input>
               </el-form-item>
 
               <el-form-item style="align-content: center">

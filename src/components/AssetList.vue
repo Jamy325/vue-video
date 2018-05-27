@@ -20,7 +20,8 @@
       </section>
 
       <section style="background-color: #343132; margin-top: 60px;padding-bottom: 5px">
-        <section v-for="(data, bourses) in bourses" style="background-color: #3C3F40; margin: 5px;padding: 10px">
+
+        <section v-for="(data, bourses) in bourses" style="background-color: #3C3F40; margin: 5px;padding: 10px" @click="onClick(bourses)">
 
           <section style=" font-size: 0.5rem; display: flex;flex-direction: row;justify-content: space-between;">
             <span>{{data.title}}</span>
@@ -118,7 +119,10 @@ export default {
         //'$route': 'initData'
     },
     methods:{
-
+      onClick(bourse){
+        console.log(bourse +" on click");
+        this.$router.push({name:'assetdetail', params:{bourse:bourse}});
+      }
     }
 }
 </script>
