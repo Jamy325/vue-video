@@ -78,10 +78,10 @@ export default {
                     this.$toast({
                         icon:'success',
                         message:'登录成功'
-                    })
+                    });
                     this.$store.dispatch('createUser',{
-                        userName:this.userName
-                    })
+                        data: data.user
+                    });
                     document.cookie = `token=${data.token};max-age=${30*24*60*60*1000}`
                     // console.log(document.cookie)
                     localStorage.setItem('user',this.userName)

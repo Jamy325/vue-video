@@ -68,18 +68,51 @@ export default {
         vfooter,
       titleBar
     },
-    data () {
-        return {
-          totalSymbols:{
-              btc:{percent:10, cny:65535.123, addValue:10, addPercent:10},
-              etc:{percent:10, cny:100.123, addValue:10, addPercent:10},
-              ttc:{percent:10, cny:100.123, addValue:10, addPercent:10},
-              bbc:{percent:10, cny:100.123, addValue:10, addPercent:10},
-          }
-        }
-    },
-    computed:{
 
+    computed:{
+      ...mapState({
+        totalSymbols:function () {
+          let userdata = this.$store.state.userdata;
+          if (!userdata) return {
+              btc:{
+                percent:10,
+                cny:100,
+                addValue:123,
+                addPercent:1234
+              }
+          };
+
+          let assets = userdata.assets || [];
+          let ts = {};
+          let allCNY = 0;
+          for(var e of assets){
+              let balance = e.balance || [];
+              for(var b in balance){
+                  let s = b.symbol;
+                  if (!ts[s]) {
+                      ts[s] = b;
+                  }else{
+                      ts[s].total += b.total;
+                      ts[s].totalCNY += b.totalCNY;
+                  }
+
+                allCNY += b.totalCNY;
+              }
+          }
+
+          var r = {};
+          for(var e in ts){
+            r[e] = {
+                percent:(ts[e].totalCNY * 100/ allCNY).toFixed(2),
+              cny:ts.totalCNY,
+              addValue:0,
+              addPercent:b.percentChange24h
+            };
+          }
+
+          return r;
+        }
+      })
     },
     created () {
 

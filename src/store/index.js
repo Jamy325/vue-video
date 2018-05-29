@@ -8,7 +8,8 @@ Vue.use(Vuex)
 const state = {
 	userInfo: '',
 	videoData:null,
-	meCommentDatas:null
+	meCommentDatas:null,
+  userdata:null,
 }
 
 export default new Vuex.Store({
