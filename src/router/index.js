@@ -9,6 +9,16 @@ import Detail from '@/components/Detail'
 import Register from '@/components/Register'
 import AppSetting from '@/components/AppSetting'
 import Asset from '@/components/Asset'
+import AssetList from '@/components/AssetList'
+import AssetAdd from '@/components/AssetAdd'
+import AssetDetail from '@/components/AssetDetail'
+import AssetEdit from '@/components/AssetEdit'
+import SymbolDetail from '@/components/SymbolDetail'
+import Market from '@/components/Market'
+import OrderBook from '@/components/OrderBook'
+
+
+
 // const Home = r => require.ensure([], () => r(require('../components/Home')), 'Home')
 // const More = r => require.ensure([], () => r(require('../components/More')), 'More')
 // const Me = r => require.ensure([], () => r(require('../components/Me')), 'Me')
@@ -28,43 +38,10 @@ export default new Router({
         {
             path: '/',
             name:'home',
-            component: Home,
-            children:[
-                {
-                    name:'search',
-                    path: '/home/search',
-                    component: Search
-                }
-            ],
+            component: Asset,
             meta: {
           		keepAlive: true // 需要被缓存
         	}
-        },
-        {
-            path: '/video/:id',
-            name: 'video',
-            component: Detail
-        },
-        {
-            path: '/all',
-            name: 'all',
-            component: More,
-        },
-        {
-            path: '/movie',
-            name: 'movie',
-            component: More
-        },
-        {
-            path: '/tv',
-            name: 'tv',
-            component: More
-        },
-        {
-            path: '/zy',
-            name: 'zy',
-            component: More,
-
         },
         {
             path: '/login',
@@ -92,7 +69,7 @@ export default new Router({
       {
         path: '/market',
         name: 'market',
-        component: Me,
+        component: Market,
       },
       {
         path: '/yujing',
@@ -103,6 +80,36 @@ export default new Router({
         name:'AppSetting',
         path: '/me/AppSetting',
         component: AppSetting
+      },
+      {
+        path: '/assetlist',
+        name: 'assetlist',
+        component: AssetList,
+      },
+      {
+        path: '/assetadd',
+        name: 'assetadd',
+        component: AssetAdd,
+      },
+      {
+        path: '/assetdetail/:bourse',
+        name: 'assetdetail',
+        component: AssetDetail,
+      },
+      {
+        path: '/assetedit',
+        name: 'assetedit',
+        component: AssetEdit,
+      },
+      {
+        path: '/symboldetail/:symbol',
+        name: 'symboldetail',
+        component: SymbolDetail,
+      },
+      {
+        path: '/OrderBook/:bourse/:symbol',
+        name: 'orderbook',
+        component: OrderBook,
       }
     ],
     scrollBehavior (to, from, savedPosition) {

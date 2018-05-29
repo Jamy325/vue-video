@@ -6,7 +6,7 @@
           资产统计
         </h1>
 
-        <router-link to="/me" slot="nextBtn">
+        <router-link to="/assetlist" slot="nextBtn">
           <div class="icon-next"></div>
         </router-link>
       </title-bar>
@@ -35,7 +35,7 @@
             </section>
         </section>
 
-      <section v-for="(data, symbol) in totalSymbols" style="background-color: #3C3F40; margin: 5px;padding: 10px">
+      <section v-for="(data, symbol) in totalSymbols" style="background-color: #3C3F40; margin: 5px;padding: 10px" @click="onClickSymbol(symbol)">
         <section style=" font-size: 0.5rem; display: flex;flex-direction: row;justify-content: space-between;align-items:center">
           <span>{{symbol}}</span> <span> ≈ ¥{{ data.cny}}</span>
         </section>
@@ -122,7 +122,10 @@ export default {
         //'$route': 'initData'
     },
     methods:{
-
+      onClickSymbol(symbol){
+        console.log(symbol+" on click");
+        this.$router.push({name:'symboldetail', params:{symbol:symbol}})
+      }
     }
 }
 </script>

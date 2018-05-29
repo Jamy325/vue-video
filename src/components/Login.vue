@@ -160,6 +160,7 @@ export default {
             border-bottom:1px solid  #1ABC9C;
             font-size: 16px;
             padding-left: 0.7rem;
+            color: white;
             background: transparent;
         }
         img{
