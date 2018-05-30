@@ -16,12 +16,13 @@
             <div class="icon-add"></div>
           </router-link>
         </title-bar>
+
         <vfooter></vfooter>
       </section>
 
-      <section style="background-color: #343132; margin-top: 60px;padding-bottom: 5px">
+      <section style="padding-bottom: 5px">
 
-        <section v-for="(data, bourses) in bourses" style="background-color: #3C3F40; margin: 5px;padding: 10px" @click="onClick(bourses)">
+        <section v-for="(data, bourses) in bourses" class="blockBackground" style=" margin: 5px;padding: 10px" @click="onClick(bourses)">
 
           <section style=" font-size: 0.5rem; display: flex;flex-direction: row;justify-content: space-between;">
             <span>{{data.title}}</span>

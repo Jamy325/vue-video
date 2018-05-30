@@ -36,6 +36,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  @import "../../style/define.scss";
+
     .footer{
         position: fixed;
         bottom: 0;
@@ -47,9 +49,9 @@ export default {
         display: -o-flex;
         display: flex;
         justify-content: center;
-        background: #4D4D4D;
+        background: $blockBackgroundColor;
         z-index: 9999;
-        border-top:1px solid #a09898;
+
         a{
             flex:1;
             justify-content: center;

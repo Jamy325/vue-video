@@ -10,8 +10,9 @@
           <div class="icon-next"></div>
         </router-link>
       </title-bar>
+
     <vfooter></vfooter>
-      <section style="background-color: #343132; margin-top: 60px;padding-bottom: 5px">
+      <section class="blockBackground" style="padding-bottom: 5px">
         <section style="display:flex;flex-direction: row; margin: 5px;padding: 5px">
               <section style="border: 0px solid red;width: 55%">
                 <section style=" font-size: 0.8rem;">
@@ -35,7 +36,7 @@
             </section>
         </section>
 
-      <section v-for="(data, symbol) in totalSymbols" style="background-color: #3C3F40; margin: 5px;padding: 10px" @click="onClickSymbol(symbol)">
+      <section v-for="(data, symbol) in totalSymbols" class="blockBackground" style="margin: 5px;padding: 10px" @click="onClickSymbol(symbol)">
         <section style=" font-size: 0.5rem; display: flex;flex-direction: row;justify-content: space-between;align-items:center">
           <span>{{symbol}}</span> <span> ≈ ¥{{ data.cny}}</span>
         </section>
@@ -132,6 +133,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-
 
 </style>
