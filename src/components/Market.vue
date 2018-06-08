@@ -11,13 +11,14 @@
         </router-link>
       </title-bar>
     <vfooter></vfooter>
-      <section style="background-color: #343132; margin-top: 60px;padding-bottom: 5px">
+      <section style="padding-bottom: 5px">
 
           <template v-for="(m,index) in markets" >
             <section v-if ="index % 2 == 0"  style="display: flex;flex-direction: row;justify-content: space-between;">
 
                 <section @click="onClickItem(markets[index].bourse , markets[index].symbol )"
-                  style="display: flex;flex-direction: column;justify-content: space-around; align-items: center; background-color: #111111; border: 5px solid #343132;  padding: 15px; width: 50%">
+                         class="blockBackground blockBorder"
+                  style="display: flex;flex-direction: column;justify-content: space-around; align-items: center;  padding: 15px; width: 50%">
                   <section> <span style="font-size: 0.3rem">{{ markets[index].symbol }} </span><span style="opacity: 0.5">{{ markets[index].bourse }}</span> </section>
                   <section> <span style="font-size: 1rem"> {{ markets[index].open }} </span> </section>
                   <section> <span style="font-size: 0.3rem; color: red"> -{{ markets[index].percentage  }}%</span>
@@ -25,7 +26,8 @@
                 </section>
 
               <section v-if="!!markets[index + 1]" @click="onClickItem(markets[index + 1].bourse, markets[index + 1].symbol )"
-                       style="display: flex;flex-direction: column;justify-content: space-around; align-items: center; background-color: #111111; padding: 15px; border: 5px solid #343132; width: 50%">
+                       class="blockBackground blockBorder"
+                       style="display: flex;flex-direction: column;justify-content: space-around; align-items: center; padding: 15px;width: 50%">
                 <section> <span style="font-size: 0.3rem">{{ markets[index + 1].symbol }} </span><span style="opacity: 0.5">{{ markets[index+1].bourse }}</span> </section>
                 <section> <span style="font-size: 1rem"> {{ markets[index + 1].open }} </span> </section>
                 <section> <span style="font-size: 0.3rem; color: red"> -{{ markets[index + 1].percentage  }}%</span>

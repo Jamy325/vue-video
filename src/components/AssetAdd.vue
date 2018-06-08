@@ -17,7 +17,7 @@
       </section>
 
 
-      <section class="assetlist" style="margin-top: 60px;padding-bottom: 5px">
+      <section class="assetlist" style="padding-bottom: 5px">
         <el-tabs v-model="activeName"  @tab-click="handleClick">
           <el-tab-pane label="交易所API" name="first">
             <el-form ref="form" :model="formInline" :label-position="'top'" label-width="80px" size="medium">
@@ -104,7 +104,7 @@ export default {
             key:'',
             secret:''
           },
-          activeName2:'first',
+          activeName:'first',
           coinTypes:[{
             value: '选项1',
             label: '黄金糕'
