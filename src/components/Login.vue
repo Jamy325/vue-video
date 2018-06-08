@@ -82,7 +82,7 @@ export default {
                     this.$store.dispatch('createUser',{
                         data: data.user
                     });
-                    document.cookie = `token=${data.token};max-age=${30*24*60*60*1000}`
+                 //   document.cookie = `token=${data.token};max-age=${30*24*60*60*1000}`
                     // console.log(document.cookie)
                     localStorage.setItem('user',this.userName)
                     localStorage.setItem('avator',data.avator)

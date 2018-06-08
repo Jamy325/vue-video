@@ -18,7 +18,8 @@ function $fetch(method,url,data, params){
           method,
           url,
           data:data,
-          params:params
+          params:params,
+          withCredentials:true
         }).then(res=>{
             let body = res.data;
             if (body.code == 200 || body.code == 201) {
@@ -47,6 +48,8 @@ export const ajax_regist = (data) => $fetch('post','/login/register', data);
 export  const ajax_symbolHistory = (data) => $fetch('get', '/exchange/history1Day', null, data);
 
 export const ajax_getUserData = (data) => $fetch('get', '/users', null, null);
+
+export const ajax_getSymbolPriceTicket = (data) => $fetch('get', '/exchange/fetchTicker', null, data);
 
 
 // 个人评论
