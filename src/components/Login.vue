@@ -60,7 +60,7 @@ export default {
     mounted () {
 
         this.url = url + '/pic?t='+Date.now()
-        this.changYzm()
+     //   this.changYzm()
     },
     methods:{
         // 登录
@@ -99,11 +99,7 @@ export default {
         },
         // 验证码切换
         changYzm () {
-            yzmChange().then(res=>{
-                this.yzmTest = res.data;
-                this.url = url+'/pic'+'?v='+ (new Date).getTime()
-                console.log('验证码',this.yzmTest)
-            })
+          this.url = url+'/pic'+'?v='+ (new Date).getTime()
         }
     }
 }

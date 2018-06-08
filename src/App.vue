@@ -8,6 +8,7 @@
     </div>
 </template>
 
+
 <script>
 export default {
     name: 'app'
@@ -19,3 +20,4 @@ export default {
 @import './src/style/common.scss';
 
 </style>
+

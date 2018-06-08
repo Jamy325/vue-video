@@ -13,7 +13,7 @@
             <template v-if=" nowUploadAvator !='' ">
                 <input @click="upload" id="upload" type="file">
                 <div class="avator_border">
-                    <img v-lazy="baseUrl+'/avator/'+ nowUploadAvator +'.png' " alt="">
+                    <!--<img v-lazy="baseUrl+'/avator/'+ nowUploadAvator +'.png' " alt="">-->
                 </div>
             </template>
             <template v-else-if="avator == ''">
@@ -126,45 +126,45 @@ export default {
         ]),
         // 初始化数据
         initData(){
-            this.loading = true;
-            if (localStorage.getItem('user') === null) {
-                this.$router.push({path:'/login'})
-            }
-            let userName = this.userName
-            meComment(userName).then(res =>  {
-                    let data = res.data
-                    this.initMeCommentData(data)
-                    this.comments = data
-            }).catch(e => {
-                this.loading = false;
-                this.$toast({
-                    icon:'fail',
-                    message:e.message
-                })
-            })
-            // 获取喜欢不喜欢数据
-            meLike(userName).then(res =>  {
-                setTimeout(()=>{
-                    this.loading = false;
-                },500)
-                let data = res.data
-                this.likeLists = data;
-                this.likeLengthOne = data[0].length
-                this.likeLengthTwo = data[1].length
-           })
-           .catch(e => {
-                this.loading = false;
-                this.$toast({
-                    icon:'fail',
-                    message:e.message
-                })
-           })
-           getAvator(userName).then(data => {
-               this.avator = data.avator
-                localStorage.setItem('avator',data.avator);
-            }).catch(e=>{
-                console.log(e)
-            })
+          //  this.loading = true;
+//            if (localStorage.getItem('user') === null) {
+//                this.$router.push({path:'/login'})
+//            }
+      //      let userName = this.userName
+//            meComment(userName).then(res =>  {
+//                    let data = res.data
+//                    this.initMeCommentData(data)
+//                    this.comments = data
+//            }).catch(e => {
+//                this.loading = false;
+//                this.$toast({
+//                    icon:'fail',
+//                    message:e.message
+//                })
+//            })
+//            // 获取喜欢不喜欢数据
+//            meLike(userName).then(res =>  {
+//                setTimeout(()=>{
+//                    this.loading = false;
+//                },500)
+//                let data = res.data
+//                this.likeLists = data;
+//                this.likeLengthOne = data[0].length
+//                this.likeLengthTwo = data[1].length
+//           })
+//           .catch(e => {
+//                this.loading = false;
+//                this.$toast({
+//                    icon:'fail',
+//                    message:e.message
+//                })
+//           })
+//           getAvator(userName).then(data => {
+//               this.avator = data.avator
+//                localStorage.setItem('avator',data.avator);
+//            }).catch(e=>{
+//                console.log(e)
+//            })
         },
         // 登出
         logout () {

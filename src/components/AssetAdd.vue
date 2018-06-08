@@ -16,59 +16,57 @@
         <vfooter></vfooter>
       </section>
 
+      <section class="assetlist">
 
-      <section class="assetlist" style="margin-top: 60px;padding-bottom: 5px">
-        <el-tabs v-model="activeName"  @tab-click="handleClick">
-          <el-tab-pane label="交易所API" name="first">
-            <el-form ref="form" :model="formInline" :label-position="'top'" label-width="80px" size="medium">
-              <el-form-item>
-                <el-input v-model="formInline.name" placeholder="请填写资产标题"></el-input>
-              </el-form-item>
+        <mt-navbar v-model="activeName"  @tab-click="handleClick">
+          <mt-tab-item label="" id="first">
+            交易所API
+          </mt-tab-item>
 
-              <el-form-item>
-                <el-col :span="11">
-                  <el-input  placeholder="请填写资产成本" v-model="formInline.cost" style="width: 100%;"></el-input>
-                </el-col>
-                <el-col class="line" :span="1">.</el-col>
-                <el-col :span="11">
-                  <el-form-item>
-                    <el-select v-model="formInline.costCoinType" placeholder="" style="width:2rem">
-                      <el-option label="CNY" value="CNY"></el-option>
-                      <el-option label="USD" value="USD"></el-option>
-                    </el-select>
-                  </el-form-item>
-              </el-col>
-              </el-form-item>
+          <mt-tab-item label="" id="second">钱包地址</mt-tab-item>
+          <mt-tab-item label="" id="third">手工输入</mt-tab-item>
+        </mt-navbar>
 
-              <el-form-item>
-                <el-select v-model="formInline.bourse" placeholder="请选择交易所" style="width: 100%">
-                  <el-option label="币安" value="CNY"></el-option>
-                  <el-option label="火币" value="USD"></el-option>
-                </el-select>
-              </el-form-item>
+        <!-- tab-container -->
+        <mt-tab-container v-model="activeName">
+          <mt-tab-container-item id="first">
+            <div>
+              <mt-field v-model="formInline.name" placeholder="请填写资产标题" :attr="{ maxlength: 10 }"></mt-field>
 
-              <el-form-item label="API Key">
-                <el-input  type="textarea" :rows="4" v-model="formInline.key" placeholder="请填写API Key" ></el-input>
-              </el-form-item>
+               <mt-field placeholder="请填写资产成本" v-model="formInline.cost" style="width: 100%;">
+                 <select v-model="formInline.bourse" placeholder="请选择交易所">
+                   <option label="币安" value="CNY"></option>
+                   <option label="火币" value="USD"></option>
+                </select>
+               </mt-field>
 
-              <el-form-item label="Secret">
-                <el-input  type="textarea" :rows="4" v-model="formInline.secret" placeholder="请填写Sercet" ></el-input>
-              </el-form-item>
 
-              <el-form-item style="align-content: center">
-                <el-button type="primary" @click="onSubmit">保存</el-button>
-              </el-form-item>
+                <mt-field  label="" type="textarea" v-model="formInline.key" placeholder="请填写API Key"  rows='4'></mt-field>
 
-              <div style="height: 1rem">
+                <mt-field label=""  type="textarea" v-model="formInline.secret" placeholder="请填写Sercet"  rows='4' ></mt-field>
 
-              </div>
-            </el-form>
 
-          </el-tab-pane>
+                <mt-cell>
+                  <mt-button type="primary" @click="onSubmit">保存</mt-button>
+                </mt-cell>
+            </div>
 
-          <el-tab-pane label="钱包地址" name="second">敬请期待</el-tab-pane>
-          <el-tab-pane label="手工输入" name="third">敬请期待</el-tab-pane>
-        </el-tabs>
+
+
+          </mt-tab-container-item>
+          <mt-tab-container-item id="second">
+
+            <div style="width: 100%;height: 100%">
+              暂未实现
+            </div>
+          </mt-tab-container-item>
+          <mt-tab-container-item id="third">
+            <div style="width: 100%;height: 100%">
+              暂未实现
+            </div>
+          </mt-tab-container-item>
+        </mt-tab-container>
+
 
       </section>
   </section>
@@ -104,12 +102,19 @@ export default {
             key:'',
             secret:''
           },
-          activeName2:'first',
+          activeName:'first',
           coinTypes:[{
             value: '选项1',
             label: '黄金糕'
           }]
+          ,
+          costCoinTypeData: [{
+            flex: 1,
+            values: ['CNY','USD'],
+            className: 'slot1'
+          }]
         }
+
     },
     computed:{
 
@@ -124,7 +129,11 @@ export default {
     methods:{
       onSubmit:function () {
 
-      }
+      },
+
+      onCostTypeChange(picker, values) {
+        this.formInline.costCoinType = values[0];
+      },
     }
 }
 </script>
@@ -132,15 +141,26 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
   .assetlist{
-    .el-input__inner  {
+   // padding-bottom: 5px;
+    color: white;
+  }
+  .assetlist{
+    .mint-navbar  {
       border: none;
       border-bottom: 1px solid #393939;
       background-color: transparent;
     }
 
-    .el-textarea__inner{
+    .mint-cell{
       border: 1px solid #393939;
       background-color: transparent;
+    }
+
+  textarea,
+  select ,
+  input{
+      background: transparent;
+      border: none;
     }
   }
 
