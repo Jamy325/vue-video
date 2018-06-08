@@ -60,7 +60,7 @@ export default {
     mounted () {
 
         this.url = url + '/pic?t='+Date.now()
-        this.changYzm()
+     //   this.changYzm()
     },
     methods:{
         // 登录
@@ -82,7 +82,7 @@ export default {
                     this.$store.dispatch('createUser',{
                         data: data.user
                     });
-                    document.cookie = `token=${data.token};max-age=${30*24*60*60*1000}`
+                 //   document.cookie = `token=${data.token};max-age=${30*24*60*60*1000}`
                     // console.log(document.cookie)
                     localStorage.setItem('user',this.userName)
                     localStorage.setItem('avator',data.avator)
@@ -99,11 +99,7 @@ export default {
         },
         // 验证码切换
         changYzm () {
-            yzmChange().then(res=>{
-                this.yzmTest = res.data;
-                this.url = url+'/pic'+'?v='+ (new Date).getTime()
-                console.log('验证码',this.yzmTest)
-            })
+          this.url = url+'/pic'+'?v='+ (new Date).getTime()
         }
     }
 }

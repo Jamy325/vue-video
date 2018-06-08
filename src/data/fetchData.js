@@ -1,5 +1,5 @@
 import axios from 'axios'
-export const url = 'http://60.205.230.45:8080';
+export const url = 'http://www.hitoken.io';
 // export const url = 'http://localhost:3000';
 let $axios = axios.create({
   baseURL: url + '/',
@@ -12,14 +12,16 @@ function getCookie(name) {
         return null;
 }
 
-function $fetch(method,url,data){
+function $fetch(method,url,data, params){
     return new Promise((reslove,reject)=>{
         $axios({
           method,
           url,
           data:data,
+          params:params,
+          withCredentials:true
         }).then(res=>{
-            let body = res.data
+            let body = res.data;
             if (body.code == 200 || body.code == 201) {
                 reslove(body)
             }else{
@@ -36,12 +38,18 @@ function $fetch(method,url,data){
 export const initHome = () => $fetch('get', '/')
 
 // 验证码
-export const yzmChange = () => $fetch('get','/pic')
+export const yzmChange = () => $fetch('get','/pic');
 
 // 注册
 export const ajax_signin = (username, password, code, smscode) => $fetch('post','/login', {username,password, code, smscode})
 
 export const ajax_regist = (data) => $fetch('post','/login/register', data);
+
+export  const ajax_symbolHistory = (data) => $fetch('get', '/exchange/history1Day', null, data);
+
+export const ajax_getUserData = (data) => $fetch('get', '/users', null, null);
+
+export const ajax_getSymbolPriceTicket = (data) => $fetch('get', '/exchange/fetchTicker', null, data);
 
 
 // 个人评论

@@ -18,35 +18,35 @@
 
 
 
-      <section style="background-color: #343132; margin-left: 10px; margin-right: 10px; margin-top: 60px;padding-bottom: 5px;">
+      <section class="blockBackground" style="padding-bottom: 5px;">
 
-        <div style="width: 100%; height: 200px; border: 1px solid red">
-
+        <div style="width: 100%; height: 150px; border: 0px solid red">
+          <chart-symbol-history :symbol="symbol"></chart-symbol-history>
         </div>
 
-        <section style=" font-size: 0.5rem; margin-top:10px ;display: flex;flex-direction: row;justify-content: space-around;">
+        <section style=" opacity: 0.7; font-size: 1.5em; margin-top:5px ;display: flex;flex-direction: row;justify-content: space-around;">
           <section>
-            <section style="display: flex;flex-direction: row;justify-content: space-between;">
-              <div>价值</div>
-              <div>{{totalCNY}}</div>
+            <section >
+              <span>价值</span>
+              <span>{{totalCNY.toFixed(2)}}</span>
             </section>
 
-            <section style="display: flex;flex-direction: row;justify-content: space-between;">
-              <div>收益</div>
-              <div>{{earning}}</div>
+            <section>
+              <span>收益</span>
+              <span>{{earning.toFixed(2)}}</span>
             </section>
           </section>
 
 
           <section>
-            <section style="display: flex;flex-direction: row;justify-content: space-between;">
-              <div>成本</div>
-              <div>{{totalCNY}}</div>
+            <section>
+              <span>成本</span>
+              <span> - </span>
             </section>
 
-            <section style="display: flex;flex-direction: row;justify-content: space-between;">
-              <div>涨幅</div>
-              <div>{{earning}}</div>
+            <section >
+              <span>涨幅</span>
+              <span>{{earning.toFixed(2)}}</span>
             </section>
           </section>
         </section>
@@ -54,27 +54,29 @@
       </section>
 
 
-    <section style="display: flex;flex-direction: row;justify-content: space-between; font-size: 0.5rem;margin: 10px; border: none; border-bottom: 1px solid #3b3b3b">
+    <section style="display: flex;flex-direction: row;justify-content: space-between; font-size: 2em;margin: 10px; border: none; border-bottom: 1px solid #3b3b3b">
         <div>总量</div>
-        <div style="margin-right: 10px">{{total}}</div>
+        <div style="margin-right: 10px">{{total.toFixed(2)}}</div>
     </section>
 
 
-    <section v-for="d in parts" style="display: flex;flex-direction: row;justify-content: space-between; font-size: 0.3rem;margin: 10px; border: none; border-bottom: 1px solid #3b3b3b">
+    <section v-for="d in parts" style="display: flex;flex-direction: row;justify-content: space-between; font-size: 1.5em;margin: 10px; border: none; border-bottom: 1px solid #3b3b3b">
 
-      <section style="display: flex;flex-direction: column;justify-content: space-between;">
-        <span style="font-size: 0.5rem">{{d.title}}</span>
-        <span style="font-size: 0.1rem;opacity: 0.5">{{d.type}}</span>
-        <span>&nbsp</span>
+      <section style="display: flex;flex-direction: column;justify-content: space-around;">
+        <div>{{d.title}}</div>
+        <div style="opacity: 0.5;font-size: 0.5em">{{d.type}}</div>
+        <div>&nbsp</div>
       </section>
 
-      <section style="display: flex;flex-direction: column;justify-content: space-between;">
-        <span style="font-size: 0.4rem">{{d.total}}</span>
-        <span style="opacity: 0.5">占比{{d.percent}}%</span>
-        <span style="opacity: 0.5">价值{{d.totalCNY}}</span>
+      <section style="display: flex;flex-direction: column;justify-content: space-around;">
+        <div style="text-align: right; margin-right: 10px">{{d.total.toFixed(2)}}</div>
+        <div style="text-align: right; margin-right: 10px;opacity: 0.5">占比{{ (100*d.percent).toFixed(2)}}%</div>
+        <div style="text-align: right; margin-right: 10px;opacity: 0.5">价值{{d.totalCNY.toFixed(2)}}</div>
       </section>
 
     </section>
+
+    <div style="height: 30px;width: 100%"> </div>
 
   </section>
 </template>
@@ -84,44 +86,45 @@ import vfooter from './common/vfooter.vue'
 import titleBar from './common/titleBar.vue'
 import { url,initHome,getAvator } from '../data/fetchData'
 import { mapActions ,mapState } from 'vuex'
-
+import ChartSymbolHistory from '@/components/ChartSymbolHistory'
 export default {
     name: 'symboldetail',
     components:{
         vfooter,
-      titleBar
+      titleBar,
+      ChartSymbolHistory
     },
     data(){
         return  {
           symbol:'',
-          totalCNY:100,
-          earning:10,
-          cost:100,
-          addPercent:10.1,
-          total:100,
-
+          total:0,
+          totalCNY:0,
+          earning:0,
+          cost:0,
+          addPercent:0,
+          parts:[]
         }
     },
 
   computed:{
-    parts(){
-      return [
-        {
-            type:"blance api",
-            title:"我的B网",
-            total:100,
-            percent:10.15,
-            totalCNY:1234
-        },
-        {
-          type:"huobi api",
-          title:"我的huobi",
-          total:100,
-          percent:50.15,
-          totalCNY:34
-        }
-      ];
-    }
+//    parts(){
+//      return [
+//        {
+//            type:"blance api",
+//            title:"我的B网",
+//            total:100,
+//            percent:10.15,
+//            totalCNY:1234
+//        },
+//        {
+//          type:"huobi api",
+//          title:"我的huobi",
+//          total:100,
+//          percent:50.15,
+//          totalCNY:34
+//        }
+//      ];
+//    }
 
   },
 
@@ -139,6 +142,39 @@ export default {
       initData(){
           let symbol = this.$route.params.symbol;
           this.symbol = symbol;
+
+        let userdata = this.$store.state.userdata;
+        if (!userdata) return;
+
+        let assets = userdata.assets || [];
+        let total = 0;
+        let totalCNY = 0;
+        let percentChange24h = 0;
+
+        let parts = [];
+        for(let e of assets) {
+          let balance = e.balance || [];
+
+            for(let b of balance){
+                if (b.symbol == symbol){
+                    total += b.total;
+                    totalCNY += b.totalCNY;
+                    percentChange24h = b.percentChange24h;
+                  parts.push({type:e.bourse +" api", title:e.title,  total:b.total, percent:0, totalCNY: b.totalCNY});
+                }
+            }
+        }
+
+        this.total = total;
+        this.totalCNY = totalCNY;
+        this.addPercent = percentChange24h;
+        this.earning = total * percentChange24h /(1+percentChange24h);
+
+        for(var p of parts){
+            p.percent = p.total / total;
+        }
+
+        this.parts = parts;
       }
     }
 }

@@ -19,10 +19,8 @@
         <vfooter></vfooter>
       </section>
 
-
-
-      <section style="background-color: #343132; margin-top: 60px;padding-bottom: 5px">
-        <section style=" font-size: 0.5rem; display: flex;flex-direction: row;justify-content: space-between;">
+      <section style="padding-bottom: 5px">
+        <section class="blockBackground" style=" padding: 10px; font-size: 2em; display: flex;flex-direction: row;justify-content: space-between;">
           <section>
             <div class="des">
              投入币种
@@ -33,7 +31,7 @@
             </div>
 
             <div class="des">
-            累计投入天数{{dateCount}}
+            累计投入天数{{dateCount}}天
             </div>
           </section>
 
@@ -42,7 +40,7 @@
               资产价值/CNY
             </div>
             <div style="color: green">
-              {{totalCNY}}
+              {{totalCNY.toFixed(2)}}
             </div>
 
             <div class="des">
@@ -55,11 +53,11 @@
               价值波动
             </div>
             <div style="color: red">
-            +{{addPercent}}%
+            {{ (addPercent*100).toFixed(2)}}%
             </div>
 
             <div class="des">
-           收益  {{earning}}{{costCoinType}}
+           收益  {{earning.toFixed(2)}}{{costCoinType}}
             </div>
           </section>
 
@@ -67,18 +65,18 @@
       </section>
 
 
-    <section style=" font-size: 0.4rem; display: flex;flex-direction: row;justify-content: space-between;">
-      <section style="background-color: #343132; margin: 5px;padding: 10px;width: 50%">
+    <section style=" font-size: 2em; display: flex;flex-direction: row;justify-content: space-between;">
+      <section class="blockBackground" style=" margin: 5px;padding: 5px;width: 50%">
         <section>
           {{valueFirst.symbol}} <span class="des">价值第一</span>
         </section>
 
         <section>
-          {{valueFirst.value}} {{costCoinType}}
+          {{valueFirst.value.toFixed(2)}} {{costCoinType}}
         </section>
       </section>
 
-      <section style="background-color: #343132; margin: 5px;padding: 10px;width: 50%">
+      <section class="blockBackground" style=" margin: 5px;padding: 5px;width: 50%">
         <section>
           {{addFirst.symbol}}
           <span class="des">涨幅第一</span>
@@ -86,26 +84,33 @@
 
         <section>
           <span style="color: red">
-            +{{addFirst.value}}%
+            {{ (addFirst.value*100).toFixed(2)}}%
           </span>
         </section>
       </section>
     </section>
 
-    <section style="background-color: #343132; margin: 5px;padding: 10px;">
-      <div style="font-family: PingFangSC-Medium;font-size: 0.8rem;color: #FFFFFF;">资产构成</div>
+    <section  class="blockBackground" style=" margin: 5px;padding: 10px;">
+      <div style="font-family: PingFangSC-Medium;font-size: 2em;color: #FFFFFF;">资产构成</div>
 
-      <div style="height: 150px;width: 100%;border: 1px solid red"> </div>
+      <div style="height: 150px;width: 100%;border: 0px solid red; margin: 5px">
+        <section style="margin-left: auto; margin-right: auto; width: 150px; height: 150px">
+          <v-chart :data="totalBalance" :height=150 :width=150 background-color="#252a31">
+            <v-scale y :options="yOptions" />
+            <v-tooltip disabled />
+            <v-pie :radius="1" :inner-radius="0.7" series-field="name" :colors="colors" />
+            <v-legend disabled />
+          </v-chart>
+        </section>
 
-      <section v-for="b in balance" style=" margin-top: 10px; padding-right: 30px; font-size: 0.4rem; display: flex;flex-direction: row;justify-content: space-between;">
-        <div>{{b.symbol}}</div>
-        <div>{{b.total}} <span style="opacity: 0.5">(≈¥{{b.totalCNY}})</span></div>
+      </div>
+
+      <section v-for="(b,index) of totalBalance" style=" margin-top: 10px; padding-right: 10px; font-size: 1.5em; display: flex;flex-direction: row;justify-content: space-between;">
+        <div :style="{ backgroundColor: colors[index]}">{{b.name}}</div>
+        <div>{{b.total.toFixed(5)}} <span style="opacity: 0.5">(≈¥{{(b.totalCNY).toFixed(2)}})</span></div>
       </section>
 
     </section>
-
-
-
   </section>
 </template>
 
@@ -114,84 +119,124 @@ import vfooter from './common/vfooter.vue'
 import titleBar from './common/titleBar.vue'
 import { url,initHome,getAvator } from '../data/fetchData'
 import { mapActions ,mapState } from 'vuex'
+import { VChart, VLine, VArea, VTooltip, VLegend, VBar, VPie, VScale } from 'vux'
 
 export default {
     name: 'assetdetail',
     components:{
-        vfooter,
-      titleBar
+      vfooter,
+      titleBar,
+      VChart,
+      VLine,
+      VArea,
+      VTooltip,
+      VLegend,
+      VBar,
+      VPie,
+      VScale
     },
     data(){
         return  {
-          "id": 1517553336776,
-          "title": "我的火币",
-          "cost": 100,
-          "costCoinType": "CNY",
-          "bourse": "huobipro",
-          "createTime":1517553336777,
-          "balance": [{
-            "symbol": "PAY",
-            "total": 10,
-            "totalCNY": 111.12,
-            "percentChange24h":-0.7
+          title:'',
+          cost:0,
+          costCoinType: '',
+          totalCNY: 0,
+          addPercent: 0,
+          dateCount: 0,
+          earning: 0,
+          valueFirst:{symbol:'无', value:0},
+          addFirst:{symbol:'无', value:0},
+          balance:[],
+          totalBalance:[],
+
+          yOptions: {
+            formatter (val) {
+              return val * 100 + '%'
+            },
           },
-            {
-              "symbol": "BTC",
-              "total": 10,
-              "totalCNY": 1211.52,
-              "percentChange24h":-0.7
-            }
-          ]
+          legendOptions: {
+            position: 'right',
+
+          },
+
+          colors:['#FE5D4D', '#3BA4FF','#737DDE','#335D4D', '#3B54FF','#727D1E']
         }
     },
 
   computed:{
-
-
-      totalCNY(){
-        return 1000;
-      },
-      addPercent(){
-        return 10.12
-      },
-      dateCount(){
-        return 10;
-      },
-      earning(){
-        return 10000;
-      },
-      valueFirst(){
-        return {symbol:'CBT', value:102123.23};
-      },
-      addFirst(){
-        return {symbol:'BTC', value:10.01};
-      }
   },
 
   beforeRouteEnter(to, from, next) {
     // react to route changes...
     // don't forget to call next()
-    console.log("update ........")
     next(function (vm) {
-      console.log("next callback")
       vm.initData();
     });
   },
 
   beforeRouteUpdate (to, from, next) {
-      // react to route changes...
-      // don't forget to call next()
-      console.log("update ........")
       this.initData();
-     next();
+        next();
     },
     methods:{
       initData(){
-          let bourse = this.$route.params.bourse;
+        let bourse = this.$route.params.bourse;
+        this.title = bourse;
 
+        let userdata = this.$store.state.userdata;
+        if (!userdata) return;
 
+        let assets = userdata.assets || [];
+        for(let e of assets){
+            if (e.bourse == bourse){
+                this.cost = e.cost;
+                this.costCoinType = e.costCoinType;
 
-          this.bourseTitle = bourse;
+                let balance = e.balance || [];
+                let totalCNY = 0;
+
+                let valueMax = {value:0, ref:null};
+                let addmax = {value:-1000, ref:null};
+
+                let balanceData = [];
+                for(let b of balance){
+                    totalCNY += b.totalCNY;
+                    if (valueMax.value < b.totalCNY) {
+                        valueMax.value = b.totalCNY;
+                        valueMax.ref = b;
+                    }
+
+                    if (addmax.value < b.percentChange24h) {
+                        addmax.value = b.percentChange24h;
+                        addmax.ref = b;
+                    }
+                  balanceData.push({symbol:b.symbol, total:b.total, totalCNY: b.totalCNY})
+                }
+
+                this.valueFirst = {symbol:valueMax.ref.symbol, value: valueMax.value};
+                this.addFirst = {symbol:addmax.ref.symbol, value: addmax.value};
+                this.balance = balanceData;
+
+                this.totalCNY = totalCNY;
+                let earn = totalCNY - e.cost;
+                this.addPercent = earn / e.cost;
+                this.earning = earn;
+
+                let createTime = e.createTime || Date.now();
+                this.dateCount = Math.ceil((Date.now() - createTime) / (24*3600*1000));
+
+                let tb = [];
+                for(let b of balanceData){
+                  tb.push({name:b.symbol,  percent: b.totalCNY / totalCNY, total:b.total, totalCNY: b.totalCNY});
+                }
+
+                tb.sort(function (a, b) {
+                  return b.percent - a.percent;
+                });
+
+                this.totalBalance = tb;
+            }
+        }
       }
     }
 }
@@ -202,7 +247,7 @@ export default {
   .des{
     opacity: 0.5;
     font-family: PingFangSC-Regular;
-    font-size: 0.1rem;
+    font-size: 0.6em;
     color: #FFFFFF;
     letter-spacing: 0;
   }
