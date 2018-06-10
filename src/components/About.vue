@@ -1,42 +1,36 @@
 <template>
-  <section>
-      <title-bar>
-        <router-link to="/me" slot="backBtn">
-          <div class="icon-back"></div>
-        </router-link>
+<section>
+    <title-bar>
+      <router-link to="/me" slot="backBtn">
+        <div class="icon-back"></div>
+      </router-link>
+      <h1 slot="title">
+        关于我们
+      </h1>
 
-        <h1 slot="title">
-          应用设置
-        </h1>
+    </title-bar>
 
-      </title-bar>
+    <div>
+      关于我们
+    </div>
 
-      <group>
-          <x-switch title="每天勿扰设置" v-model="on"></x-switch>
-        <datetime v-model="startTime" format="HH:mm" :minute-list="['00', '15', '30', '45']" title="从"></datetime>
-        <datetime v-model="endTime" format="HH:mm" :minute-list="['00', '15', '30', '45']" title="到"></datetime>
 
-      </group>
-
-  </section>
+</section>
 </template>
 
 
 <script>
 
-import vfooter from './common/vfooter.vue'
-import titleBar from './common/titleBar.vue'
+import titleBar from './common/titleBar.vue';
 
 import {mapActions,mapState} from 'vuex'
 import { ajax_regist , yzmChange, checkUser,url } from '../data/fetchData.js'
-
 import { XSwitch, Group, Cell, Datetime} from 'vux'
 
 export default {
-    name: 'AppSetting',
+    name: 'About',
     components:{
       titleBar,
-      vfooter,
       Cell,
       Group,
       XSwitch,

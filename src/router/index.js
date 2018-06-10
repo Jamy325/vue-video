@@ -16,7 +16,12 @@ import AssetEdit from '@/components/AssetEdit'
 import SymbolDetail from '@/components/SymbolDetail'
 import Market from '@/components/Market'
 import OrderBook from '@/components/OrderBook'
+import SellBuy from '@/components/SellBuy'
+import HistoryDelegate from "@/components/HistoryDelegate"
 
+import ChooseBourse from "@/components/ChooseBourse"
+import ChooseSymbol from "@/components/ChooseSymbol"
+import About from "@/components/About"
 
 
 // const Home = r => require.ensure([], () => r(require('../components/Home')), 'Home')
@@ -82,6 +87,11 @@ export default new Router({
         component: AppSetting
       },
       {
+        path: '/me/about',
+        name: 'About',
+        component: About,
+      },
+      {
         path: '/assetlist',
         name: 'assetlist',
         component: AssetList,
@@ -110,7 +120,28 @@ export default new Router({
         path: '/OrderBook/:bourse/:symbol',
         name: 'orderbook',
         component: OrderBook,
-      }
+      },
+      {
+        path: '/SellBuy/:bourse/:symbol',
+        name: 'SellBuy',
+        component: SellBuy,
+      },
+      {
+        path: '/HistoryDelegate/:bourse/:symbol',
+        name: 'HistoryDelegate',
+        component: HistoryDelegate,
+      },
+      {
+        path: '/ChooseBourse',
+        name: 'ChooseBourse',
+        component: ChooseBourse,
+      },
+      {
+        path: '/ChooseSymbol/:bourse',
+        name: 'ChooseSymbol',
+        component: ChooseSymbol,
+      },
+
     ],
     scrollBehavior (to, from, savedPosition) {
         return { x: 0, y: 0 }

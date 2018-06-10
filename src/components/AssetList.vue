@@ -66,7 +66,7 @@ import { url,initHome,getAvator } from '../data/fetchData'
 import { mapActions ,mapState } from 'vuex'
 
 export default {
-    name: 'Asset',
+    name: 'AssetList',
     components:{
         vfooter,
         titleBar
