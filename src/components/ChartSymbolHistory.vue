@@ -22,7 +22,7 @@ import { ajax_symbolHistory} from '../data/fetchData.js'
 import { VChart, VLine, VArea, VBar, VPie, VPoint, VScale, VAxis, VGuide, VTooltip, VLegend } from 'vux'
 
 export default {
-    name: 'Asset',
+    name: 'ChartSymbolHistory',
     components:{
       vfooter,
       titleBar,

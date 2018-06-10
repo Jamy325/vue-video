@@ -16,34 +16,35 @@
         <vfooter></vfooter>
       </section>
 
+      <tab :line-width=2 v-model="index" prevent-default @on-before-index-change="switchTabItem">
+        <tab-item selected>交易所api</tab-item>
+        <tab-item>钱包地址</tab-item>
+        <tab-item>手动输入</tab-item>
+      </tab>
 
+    <swiper v-model="index" height="500px" :show-dots="false">
+      <swiper-item :key="0">
+          <group gutter="0px">
+            <x-input placeholder="填写资产标题"  placeholder-align="left"></x-input>
+            <x-input placeholder="填写资产成本"  placeholder-align="left">
+              <selector slot="right-full-height" placeholder="请选择" v-model="formInline.costCoinType" :options="list"></selector>
+            </x-input>
 
+            <selector  placeholder="请选择交易所" v-model="formInline.bourse" :options="bourses"></selector>
+            <x-textarea title="API Key" v-model="formInline.key" :show-counter="true" :max="256" :rows="4"></x-textarea>
+            <x-textarea title="Secret" v-model="formInline.secret" :show-counter="true" :max="256" :rows="4"></x-textarea>
+          </group>
+      </swiper-item>
 
+      <swiper-item :key="1">
+        <div class="tab-swiper vux-center">2 Container</div>
+      </swiper-item>
 
+      <swiper-item :key="2">
+        <div class="tab-swiper vux-center">3 Container</div>
+      </swiper-item>
+    </swiper>
 
-                <mt-cell>
-                  <mt-button type="primary" @click="onSubmit">保存</mt-button>
-                </mt-cell>
-            </div>
-
-
-
-          </mt-tab-container-item>
-          <mt-tab-container-item id="second">
-
-            <div style="width: 100%;height: 100%">
-              暂未实现
-            </div>
-          </mt-tab-container-item>
-          <mt-tab-container-item id="third">
-            <div style="width: 100%;height: 100%">
-              暂未实现
-            </div>
-          </mt-tab-container-item>
-        </mt-tab-container>
-
-
-      </section>
   </section>
 </template>
 
@@ -51,25 +52,32 @@
 import vfooter from './common/vfooter.vue'
 import titleBar from './common/titleBar.vue'
 
-import {Input, TabPane, Table, Select, Col} from 'element-ui';
-
-
 import { url,initHome,getAvator } from '../data/fetchData'
 import { mapActions ,mapState } from 'vuex'
+
+import { Tab, TabItem,Swiper,SwiperItem,XInput, Selector,Cell, Group, XTextarea} from 'vux'
 
 export default {
     name: 'Asset',
     components:{
         vfooter,
       titleBar,
-      Input,
-      TabPane,
-      Table,
-      Select,
-      Col
+      Tab,
+      TabItem,
+      Swiper,
+      SwiperItem,
+      XInput,
+      Selector,
+      Cell,
+      Group,
+      XTextarea
     },
     data () {
         return {
+          index:0,
+          index01:0,
+          list: [{key: 'CNY', value: 'CNY'}, {key: 'USD', value: 'USD'}],
+          bourses:[{key: 'huobi', value: 'huobi'}, {key: 'binanace', value: 'binance'}],
           formInline:{
             cost:100,
             bourse:'',
@@ -109,12 +117,19 @@ export default {
       onCostTypeChange(picker, values) {
         this.formInline.costCoinType = values[0];
       },
+
+      switchTabItem (index) {
+          this.index = index
+      }
     }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
+<style lang="less" scoped>
+  @import '~vux/src/styles/1px.less';
+  @import '~vux/src/styles/center.less';
+
   .assetlist{
    // padding-bottom: 5px;
     color: white;
@@ -137,6 +152,11 @@ export default {
       background: transparent;
       border: none;
     }
+  }
+
+  .tab-swiper {
+    background-color: #252a31;
+    height: 400px;
   }
 
 </style>

@@ -1,13 +1,8 @@
 <template>
     <section class="me" @touchstart="touchStartHideAll">
-        <vfooter></vfooter>
-        <transition name="fade">
-            <div class="loading" v-if="loading">
-                <div class="loading_dialog">
-                    <img src="./common/loading.svg" alt="">
-                </div>
-            </div>
-        </transition>
+
+        <vfooter v-if="!showShare"></vfooter>
+
         <section class="me_deatil" @click="showDefaultName">
             <section class="avator">
             <template v-if=" nowUploadAvator !='' ">
@@ -40,33 +35,60 @@
                退出
             </div>
         </section>
-        <section class="like_list list">
-            <h3>
-              <router-link to="/me/AppSetting">
-                <i class="iconfont icon-setting"></i>
-                <span style="margin-left: 10px;font-size: 0.5rem">应用设置 </span>
-              </router-link>
-            </h3>
 
-        </section>
-        <section class="dislike_list list">
-            <h3>
-              <router-link to="/me">
-                <i class="iconfont icon-share"></i>
-                <span style="margin-left: 10px;font-size: 0.5rem">分享hitoken </span>
-              </router-link>
 
-            </h3>
+        <group class="blockBackground">
+        <cell link="/me/AppSetting" style="background-color: transparent">
+          <i class="iconfont icon-setting" slot="icon"></i>
+          <span slot="title">应用设置</span></cell>
+          <cell @click.native="showShare=true" :is-link="true">
+            <i class="iconfont icon-share" slot="icon"></i>
+            <span slot="title">分享HiToken</span>
+          </cell>
 
-        </section>
-        <section class="comment list">
-            <h3>
-              <router-link to="/me">
-                <i class="iconfont icon-about"></i>
-                <span style="margin-left: 10px;font-size: 0.5rem">关于我们 </span>
-              </router-link>
-            </h3>
-        </section>
+          <cell link="/me/About">
+            <i class="iconfont icon-about" slot="icon"></i>
+            <span slot="title">关于我们</span>
+            </cell>
+        </group>
+
+          <div v-transfer-dom>
+            <popup v-model="showShare">
+              <div style="padding: 5px" class="blockBackground">
+                <flexbox>
+                  <flexbox-item>
+                    <div style="text-align: center;color: white">
+                      <img src="../assets/share/wechat@2x.png" width="45px" height="45px">
+                      <div>微信好友</div>
+                    </div>
+                  </flexbox-item>
+                  <flexbox-item>
+                    <div style="text-align: center;color: white">
+                      <img src="../assets/share/wechat_moment@2x.png" width="45px" height="45px">
+                      <div>朋友圈</div>
+                    </div>
+                  </flexbox-item>
+                  <flexbox-item>
+                    <div style="text-align: center;color: white">
+                      <img src="../assets/share/qq@2x.png" width="45px" height="45px">
+                      <div>QQ</div>
+                    </div>
+                  </flexbox-item>
+                  <flexbox-item>
+                    <div style="text-align: center;color: white">
+                      <img src="../assets/share/weibo@2x.png" width="45px" height="45px">
+                      <div>微博</div>
+                    </div>
+                  </flexbox-item>
+                </flexbox>
+                <div style="margin: 15px">
+                  <x-button title="取消" @click.native="showShare=false">取消</x-button>
+                </div>
+
+              </div>
+
+            </popup>
+          </div>
     </section>
   </section>
 </template>
@@ -75,13 +97,34 @@
 import vfooter from './common/vfooter.vue'
 import {mapState,mapActions} from 'vuex'
 import { url,meComment, meLike, meDelete, uploadAvator, editNameData, getAvator} from '../data/fetchData.js'
+import { TransferDom, Popup, TabItem,Swiper,SwiperItem,XInput, Selector,Cell, Group, XTextarea,Flexbox, FlexboxItem,XTable,XButton} from 'vux'
+
+
 export default {
     name: 'me',
+    directives: {
+      TransferDom
+    },
     components:{
         vfooter,
+      TransferDom,
+      Popup,
+      TabItem,
+      Swiper,
+      SwiperItem,
+      XInput,
+      Selector,
+      Cell,
+      Group,
+      XTextarea,
+      Flexbox,
+      FlexboxItem,
+      XTable,
+      XButton
     },
     data () {
         return {
+            showShare:false,
             likeLists:'',
             comments: [],
             loading: false,
@@ -346,4 +389,15 @@ export default {
 
 <style lang="scss" scoped>
 @import 'src/style/me';
+
+</style>
+
+<style lang="less" scoped>
+
+  .blockBackground {
+    .vux-no-group-title{
+      background-color:transparent;
+    }
+  }
+
 </style>

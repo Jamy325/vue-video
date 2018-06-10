@@ -69,7 +69,7 @@ import { mapActions ,mapState } from 'vuex'
 import {Input, TabPane, Table, Select, Col} from 'element-ui';
 
 export default {
-    name: 'assetdetail',
+    name: 'AssetEdit',
     components:{
         vfooter,
       titleBar

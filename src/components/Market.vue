@@ -6,7 +6,7 @@
           市场交易
         </h1>
 
-        <router-link to="/assetlist" slot="nextBtn">
+        <router-link to="/ChooseBourse" slot="nextBtn">
           <div class="icon-add"></div>
         </router-link>
       </title-bar>
