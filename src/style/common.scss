@@ -127,6 +127,10 @@ input{
   background: $blockBackgroundColor;
 }
 
+.blockBorder {
+  border: 5px solid $backgroundColor;
+}
+
 .disableBackground{
   background: $disabledBackgroundColor;
 }
