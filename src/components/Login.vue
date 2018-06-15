@@ -75,13 +75,12 @@ export default {
           ajax_signin(this.userName,this.password).then(data => {
                 // 用户存在
                 if (data.code == 200) {
-                    this.$toast({
-                        icon:'success',
-                        message:'登录成功'
-                    });
+                  this.$vux.toast.show({text:'登录成功'});
+
                     this.$store.dispatch('createUser',{
                         data: data.user
                     });
+
                  //   document.cookie = `token=${data.token};max-age=${30*24*60*60*1000}`
                     // console.log(document.cookie)
                     localStorage.setItem('user',this.userName)
@@ -91,10 +90,11 @@ export default {
                     },1000)
                 }
             }).catch(e=>{
-                this.$toast({
-                    icon:'fail',
-                    message: e.error
-                })
+            this.$vux.toast.show({
+              text: e.message ? e.message : e.error,
+              type:'cancel',
+              width: '15em'
+            });
             })
         },
         // 验证码切换

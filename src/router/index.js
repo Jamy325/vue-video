@@ -107,7 +107,7 @@ export default new Router({
         component: AssetDetail,
       },
       {
-        path: '/assetedit',
+        path: '/assetedit/:bourse',
         name: 'assetedit',
         component: AssetEdit,
       },

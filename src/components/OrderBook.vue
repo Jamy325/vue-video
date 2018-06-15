@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="orderbook">
       <title-bar>
         <router-link to="/market" slot="backBtn">
           <div class="icon-back"></div>
@@ -16,14 +16,14 @@
         </router-link>
       </title-bar>
 
-      <section style="background-color: #343132;padding-bottom: 5px">
+      <section style="padding-bottom: 5px" class="blockBackground">
 
         <flexbox orient="vertical">
           <flexbox-item>
 
             <flexbox>
-              <flexbox-item><div class="flex-demo-item">{{ticket.open.toFixed(2)}}</div></flexbox-item>
-              <flexbox-item><div class="flex-demo-item">{{(ticket.open*ticket.price_cny).toFixed(2)}}</div></flexbox-item>
+              <flexbox-item><div class="flex-demo-item">{{ticket.close.toFixed(2)}}</div></flexbox-item>
+              <flexbox-item><div class="flex-demo-item">{{(ticket.close*ticket.price_cny).toFixed(2)}}</div></flexbox-item>
             </flexbox>
 
           </flexbox-item>
@@ -32,8 +32,8 @@
             <flexbox>
               <flexbox-item>
                 <flexbox align="center" justify = "space-around">
-                  <div class="flex-demo-item-1-1">{{(ticket.percentage*100).toFixed(2)}}%</div>
-                  <div class="flex-demo-item-1-1">{{(ticket.open*ticket.percentage*ticket.price_cny).toFixed(2)}}</div>
+                  <div class="flex-demo-item-1-1">{{((ticket.percentage || 0) *100).toFixed(2)}}%</div>
+                  <div class="flex-demo-item-1-1">{{(ticket.close*(ticket.percentage || 0)*ticket.price_cny).toFixed(2)}}</div>
                 </flexbox>
 
               </flexbox-item>
@@ -41,7 +41,7 @@
               <flexbox-item>
                 <flexbox align="center" justify = "space-around">
                   <div class="flex-demo-item-1-2">24h最低</div>
-                  <div class="flex-demo-item-1-2">{{(ticket.open*ticket.percentage*ticket.price_cny).toFixed(2)}}</div>
+                  <div class="flex-demo-item-1-2">{{(ticket.low*ticket.price_cny).toFixed(2)}}</div>
                 </flexbox>
               </flexbox-item>
             </flexbox>
@@ -53,7 +53,7 @@
               <flexbox-item>
                 <flexbox align="center" justify = "space-around">
                   <div class="flex-demo-item-1-2">24h成交</div>
-                  <div class="flex-demo-item-1-2">{{(ticket.open*ticket.percentage*ticket.price_cny).toFixed(2)}}</div>
+                  <div class="flex-demo-item-1-2">{{(ticket.baseVolume).toFixed(2)}}</div>
                 </flexbox>
 
               </flexbox-item>
@@ -61,7 +61,7 @@
               <flexbox-item>
                 <flexbox align="center" justify = "space-around">
                   <div class="flex-demo-item-1-2">24h最高</div>
-                  <div class="flex-demo-item-1-2">{{(ticket.open*ticket.percentage*ticket.price_cny).toFixed(2)}}</div>
+                  <div class="flex-demo-item-1-2">{{(ticket.high*ticket.price_cny).toFixed(2)}}</div>
                 </flexbox>
               </flexbox-item>
             </flexbox>
@@ -69,7 +69,11 @@
           </flexbox-item>
         </flexbox>
 
-        <div style="height: 150px; border: 1px solid red;margin: 5px"> </div>
+        <div style="height: 150px; border: 0px solid red;margin: 0px;padding: 5px">
+          <chart-symbol-history :symbol="this.$route.params.symbol.split('_')[0]">
+
+          </chart-symbol-history>
+        </div>
 
         <tab :line-width=2 v-model="index" prevent-default @on-before-index-change="switchTabItem">
           <tab-item selected>委托订单</tab-item>
@@ -77,28 +81,28 @@
         </tab>
         <swiper v-model="index" height="500px" :show-dots="false">
           <swiper-item :key="0">
-            <x-table full-bordered style="background-color:#fff;" :cell-bordered="false">
+            <x-table full-bordered class="blockBackground" :cell-bordered="false">
               <thead>
-              <tr >
+              <tr>
                 <th style="color: green">出价</th>
-                <th>数量</th>
+                <th style="color: white">数量</th>
                 <th style="color: red">出价</th>
-                <th>数量</th>
+                <th style="color: white">数量</th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="(item,index) of orderbook.bids">
+              <tr v-for="(item,idx) of orderbook.bids">
                 <td style="color: green">{{item[0]}}</td>
-                <td>{{item[1]}}</td>
-                <td style="color: red">{{orderbook.asks[index][0]}}</td>
-                <td>{{orderbook.asks[index][0]}}</td>
+                <td style="color: white">{{item[1]}}</td>
+                <td style="color: red">{{orderbook.asks[idx][0]}}</td>
+                <td style="color: white">{{orderbook.asks[idx][0]}}</td>
               </tr>
               </tbody>
             </x-table>
           </swiper-item>
 
           <swiper-item :key="1">
-            <x-table full-bordered style="background-color:#fff;" :cell-bordered="false">
+            <x-table full-bordered class="blockBackground" :cell-bordered="false">
               <thead>
               <tr>
                 <th>类型</th>
@@ -108,11 +112,12 @@
               </tr>
               </thead>
               <tbody>
-              <tr>
-                <td>Banana</td>
-                <td>$1.20</td>
-                <td>x 08</td>
-                <td>x 08</td>
+              <tr v-for="(item,idx) of trades">
+                <td v-if="item.side == 'buy'" style="color: red"> 买入 </td>
+                <td v-else style="color: green">卖出</td>
+                <td>{{item.price.toFixed(4)}}</td>
+                <td>{{item.amount.toFixed(4)}}</td>
+                <td>{{new Date(item.timestamp).toLocaleString()}}</td>
               </tr>
               </tbody>
             </x-table>
@@ -132,6 +137,7 @@
 <script>
 import vfooter from './common/vfooter.vue'
 import titleBar from './common/titleBar.vue'
+import ChartSymbolHistory from './ChartSymbolHistory'
 import { url,initHome,getAvator } from '../data/fetchData'
 import { mapActions ,mapState } from 'vuex'
 import { Tab, TabItem,Swiper,SwiperItem,XInput, Selector,Cell, Group, XTextarea,Flexbox, FlexboxItem,XTable,XButton} from 'vux'
@@ -141,6 +147,7 @@ export default {
     components:{
         vfooter,
       titleBar,
+      ChartSymbolHistory,
       Tab,
       TabItem,
       Swiper,
@@ -161,41 +168,20 @@ export default {
           ticket:{
             bourse:"huobi",
             symbol:"btc/usd",
-            open:20,
+            close:20,
             price_cny:12,
             percentage:12.12,
+            low:0,
+            hight:0,
             baseVolume:1234
           },
           orderbook:{
             bids:[
-              [12,1],
-              [13,2],
-              [14,3],
-              [15,4],
-              [12,1],
-              [13,2],
-              [14,3],
-              [15,4],
-              [12,1],
-              [13,2],
-              [14,3],
-              [15,4]
             ],
             asks:[
-              [21,5],
-              [22,6],
-              [23,7],
-              [24,8],
-              [21,5],
-              [22,6],
-              [23,7],
-              [24,8],
-              [21,5],
-              [22,6],
-              [23,7],
-              [24,8],
             ]
-          }
+          },
+          trades:[]
         }
     },
     computed:{
@@ -205,6 +191,15 @@ export default {
       }
     },
     created () {
+      let params = this.$route.params;
+      let symbol = params.symbol.replace("_","/");
+      let bourse = params.bourse;
+
+      let arg = {symbol:symbol, bourse:bourse};
+
+      this.loadOrderBookData(arg);
+      this.loadTicker(arg);
+      this.loadTrade(arg);
 
     },
     watch: {
@@ -214,6 +209,39 @@ export default {
     methods:{
       switchTabItem (index) {
         this.index = index
+      },
+      loadTicker(arg){
+        this.$store.dispatch("loadSymbolPriceTicker", arg).then((data)=>{
+          this.ticket = data;
+        }).catch(e=>{
+          this.$vux.toast.show({
+            text: e.message ? e.message : e.error,
+            type:'cancel',
+            width:'15em'
+          });
+        });
+      },
+      loadOrderBookData(arg){
+        this.$store.dispatch("loadOrderBookData",arg).then((data)=>{
+          this.orderbook = data;
+        }).catch(e=>{
+          this.$vux.toast.show({
+            text: e.message ? e.message : e.error,
+            type:'cancel',
+            width:'15em'
+          });
+        });
+      },
+      loadTrade(arg){
+        this.$store.dispatch("loadTrades",arg).then((data)=>{
+          this.trades = data;
+        }).catch(e=>{
+          this.$vux.toast.show({
+            text: e.message ? e.message : e.error,
+            type:'cancel',
+            width:'15em'
+          });
+        });
       }
     }
 }
@@ -252,5 +280,11 @@ export default {
     border: 0px solid red;
     font-size: 1.5em;
   }
+
+  .orderbook {
+    .vux-tab{
+      background-color: transparent;
+    };
+  };
 
 </style>

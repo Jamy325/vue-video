@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section style="color: #1D2024">
       <title-bar>
         <router-link to="/me" slot="backBtn">
           <div class="icon-back"></div>
@@ -12,9 +12,14 @@
       </title-bar>
 
       <group>
-          <x-switch title="每天勿扰设置" v-model="on"></x-switch>
-        <datetime v-model="startTime" format="HH:mm" :minute-list="['00', '15', '30', '45']" title="从"></datetime>
-        <datetime v-model="endTime" format="HH:mm" :minute-list="['00', '15', '30', '45']" title="到"></datetime>
+
+        <x-switch title="每天勿扰设置" v-model="on" @on-change="onSwitch()"></x-switch>
+        <datetime style="color: white" v-model="startTime" format="HH:mm" :minute-list="['00', '15', '30', '45']" title="从" @on-change="onChange()">
+
+        </datetime>
+        <datetime style="color: white" v-model="endTime" format="HH:mm" :minute-list="['00', '15', '30', '45']" title="到" @on-change="onChange()">
+
+        </datetime>
 
       </group>
 
@@ -57,7 +62,18 @@ export default {
     mounted () {
     },
     methods:{
+      onSwitch(){
+        this.submit();
+      },
+      onChange(){
+        if (this.on){
+          this.on = false;
+          this.submit();
+        }
+      },
+      submit(){
 
+      }
     }
 }
 </script>

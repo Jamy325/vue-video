@@ -6,13 +6,18 @@ import router from './router'
 import store from './store'
 import './base/rem'
 import VueLazyload from 'vue-lazyload'
-import Toast from './components/common/Toast.js';
-import promise from 'es6-promise';
 
+import promise from 'es6-promise';
 import { ajax_getUserData } from './data/fetchData'
 
+import  { ToastPlugin } from 'vux'
+
+// 默认参数
+Vue.use(ToastPlugin, {position: 'default'})
+
+
 promise.polyfill();
-Vue.use(Toast);
+
 Vue.use(VueLazyload, {
   loading: 'http://www.wclimb.site/images/imgLoading.svg'
 });

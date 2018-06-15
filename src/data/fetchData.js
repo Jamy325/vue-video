@@ -51,6 +51,30 @@ export const ajax_getUserData = (data) => $fetch('get', '/users', null, null);
 
 export const ajax_getSymbolPriceTicket = (data) => $fetch('get', '/exchange/fetchTicker', null, data);
 
+export const ajax_postAddExchange = (data) => $fetch('post', '/users/addExchangeApi', data, null);
+
+export const ajax_getBourse = ()=>$fetch('get', '/exchange/list');
+
+export const ajax_getSymbolList = (data)=>$fetch('get', '/exchange/symbols', null, data);
+
+export const ajax_postAddMarket = (data)=>$fetch('post', '/users/addMarket', data);
+
+export const ajax_getOrderBook = (data)=>$fetch('get', '/exchange/fetchOrderBook', null, data);
+
+export const ajax_getTrades = (data)=>$fetch('get', '/exchange/fetchTrades', null, data);
+
+export const ajax_getOrders = (data)=>$fetch('get', '/users/fetchOrders', null, data);
+
+export const ajax_postUpdateAsset = (data)=>$fetch('post', '/users/updateAsset', data);
+
+
+
+export const ajax_postCreateMarketBuyOrder = (data)=>$fetch('post', '/users/createMarketBuyOrder ', data);
+export const ajax_postCreateMarketSellOrder = (data)=>$fetch('post', '/users/createMarketSellOrder ', data);
+export const ajax_postCreateLimitBuyOrder = (data)=>$fetch('post', '/users/createLimitBuyOrder', data);
+export const ajax_postCreateLimitSellOrder = (data)=>$fetch('post', '/users/createLimitSellOrder', data);
+
+export const ajax_getKline = (data)=>$fetch('get', '/exchange/fetch1DayOHLCV', null, data);
 
 // 个人评论
 export const meComment = (userName) => $fetch('post', 'getUserComment', {userName})

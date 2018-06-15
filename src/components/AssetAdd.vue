@@ -1,7 +1,5 @@
 <template>
-  <section>
-
-
+  <section class="assetAddClass">
       <section>
         <title-bar>
           <router-link to="/asset" slot="backBtn">
@@ -22,26 +20,30 @@
         <tab-item>手动输入</tab-item>
       </tab>
 
-    <swiper v-model="index" height="500px" :show-dots="false">
+    <swiper v-model="index" height="600px" :show-dots="false">
       <swiper-item :key="0">
           <group gutter="0px">
-            <x-input placeholder="填写资产标题"  placeholder-align="left"></x-input>
-            <x-input placeholder="填写资产成本"  placeholder-align="left">
-              <selector slot="right-full-height" placeholder="请选择" v-model="formInline.costCoinType" :options="list"></selector>
+            <x-input placeholder="填写资产标题" v-model="formInline.title"  placeholder-align="left"></x-input>
+            <x-input placeholder="填写资产成本"  v-model="formInline.cost" placeholder-align="left">
+              <selector slot="right-full-height" placeholder="请选择" v-model="formInline.costCoinType" :options="coinList"></selector>
             </x-input>
 
-            <selector  placeholder="请选择交易所" v-model="formInline.bourse" :options="bourses"></selector>
-            <x-textarea title="API Key" v-model="formInline.key" :show-counter="true" :max="256" :rows="4"></x-textarea>
-            <x-textarea title="Secret" v-model="formInline.secret" :show-counter="true" :max="256" :rows="4"></x-textarea>
+            <selector  placeholder="请选择交易所" v-model="formInline.bourse" :options="bourses" name="value" @click.native="onClickBourse"></selector>
+            <x-textarea placeholder="请输入Key" title="API Key" v-model="formInline.key" :show-counter="false" :rows="4" :cols="35" ></x-textarea>
+            <x-textarea placeholder="请输入Secret" title="Secret" v-model="formInline.secret" :show-counter="false"  :rows="4" :cols="35"></x-textarea>
+
+            <x-button type="primary" action-type="button" style="width: 50%;margin: 5px auto 10px auto" @click.native="onSubmit">提交</x-button>
           </group>
+
+
       </swiper-item>
 
       <swiper-item :key="1">
-        <div class="tab-swiper vux-center">2 Container</div>
+        <div class="tab-swiper vux-center">敬请期待</div>
       </swiper-item>
 
       <swiper-item :key="2">
-        <div class="tab-swiper vux-center">3 Container</div>
+        <div class="tab-swiper vux-center">敬请期待</div>
       </swiper-item>
     </swiper>
 
@@ -52,15 +54,16 @@
 import vfooter from './common/vfooter.vue'
 import titleBar from './common/titleBar.vue'
 
-import { url,initHome,getAvator } from '../data/fetchData'
+import { ajax_postAddExchange, ajax_getBourse} from '../data/fetchData'
 import { mapActions ,mapState } from 'vuex'
 
-import { Tab, TabItem,Swiper,SwiperItem,XInput, Selector,Cell, Group, XTextarea} from 'vux'
+import {Toast, XButton, Tab, TabItem,Swiper,SwiperItem,XInput, Selector,Cell, Group, XTextarea} from 'vux'
 
 export default {
     name: 'Asset',
     components:{
-        vfooter,
+      vfooter,
+      Toast,
       titleBar,
       Tab,
       TabItem,
@@ -70,18 +73,18 @@ export default {
       Selector,
       Cell,
       Group,
+      XButton,
       XTextarea
     },
     data () {
         return {
           index:0,
           index01:0,
-          list: [{key: 'CNY', value: 'CNY'}, {key: 'USD', value: 'USD'}],
-          bourses:[{key: 'huobi', value: 'huobi'}, {key: 'binanace', value: 'binance'}],
           formInline:{
+            title:'',
             cost:100,
             bourse:'',
-            costCoinType:'',
+            costCoinType:'CNY',
             key:'',
             secret:''
           },
@@ -90,73 +93,104 @@ export default {
             value: '选项1',
             label: '黄金糕'
           }]
-          ,
-          costCoinTypeData: [{
-            flex: 1,
-            values: ['CNY','USD'],
-            className: 'slot1'
-          }]
         }
 
     },
     computed:{
-
+      ...mapState(["bourses","coinList"]),
     },
-    created () {
-
-    },
-    watch: {
-        // 如果路由有变化，会再次执行该方法
-        //'$route': 'initData'
+    created(){
+      this.loadBourseData();
     },
     methods:{
-      onSubmit:function () {
+      check(){
+        let form = this.formInline;
 
+        let err = "";
+        if (form.title == ''){
+            err = "标题不能为空";
+            return err;
+        }
+
+        let cost = parseInt(form.cost || 0);
+        if (cost == 0){
+          err = "成本填写错误";
+          return err;
+        }
+
+        if ((form.costCoinType || "")== ""){
+          err = "必须选择成本单位";
+          return err;
+        }
+
+
+        if ((form.bourse || "") == "") {
+          err = "必须选择一个交易所";
+          return err;
+        }
+
+        if ((form.key || "") == "" ){
+          err = "key 不能为空";
+          return err;
+        }
+
+        if ((form.secret || "") == "" ){
+          err = "secret 不能为空";
+          return err;
+        }
+
+        return err;
       },
 
-      onCostTypeChange(picker, values) {
-        this.formInline.costCoinType = values[0];
+      onSubmit () {
+        let errMsg = this.check();
+        if (errMsg.length > 0){
+          this.$vux.toast.show({
+            text: errMsg,
+            type:'cancel',
+            width:'15em'
+          });
+          return
+        }
+
+        ajax_postAddExchange(this.formInline).then(data=>{
+          this.$vux.toast.show({text:'添加成功'});
+          this.$router.push("/");
+        }).catch(e => {
+          this.$vux.toast.show({
+            text: e.message ? e.message : e.error,
+            type:'cancel',
+            width: '15em'
+          });
+        });
       },
 
       switchTabItem (index) {
           this.index = index
+      },
+
+      loadBourseData(){
+        if (this.bourses.length == 0){
+          this.$store.dispatch("loadBourseData",{});
+        }
+      },
+
+      onClickBourse(){
+          this.loadBourseData();
       }
     }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="less" scoped>
-  @import '~vux/src/styles/1px.less';
-  @import '~vux/src/styles/center.less';
+<style lang="less">
+  .assetAddClass {
+    .vux-x-textarea{
+      flex-direction: column;
+    };
 
-  .assetlist{
-   // padding-bottom: 5px;
-    color: white;
-  }
-  .assetlist{
-    .mint-navbar  {
-      border: none;
-      border-bottom: 1px solid #393939;
+    .vux-tab{
       background-color: transparent;
-    }
-
-    .mint-cell{
-      border: 1px solid #393939;
-      background-color: transparent;
-    }
-
-  textarea,
-  select ,
-  input{
-      background: transparent;
-      border: none;
-    }
-  }
-
-  .tab-swiper {
-    background-color: #252a31;
-    height: 400px;
-  }
-
+    };
+  };
 </style>

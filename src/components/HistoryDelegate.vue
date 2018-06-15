@@ -94,43 +94,22 @@ export default {
     data () {
         return {
           index:0,
-          ticket:{
-            bourse:"huobi",
-            symbol:"btc/usd",
-            open:20,
-            price_cny:12,
-            percentage:12.12,
-            baseVolume:1234
-          },
+
           orders:[
-            { id: 1238528370,//订单id
-            timestamp: 1517992068188,//委托时间
-            datetime: '2018-02-07T08:27:48.188Z',//utc标准时间
-            symbol: 'PAY/BTC',//交易对
-            type: 'limit',//订单类型:market市价,limit限价
-            side: 'sell', // sell卖出, buy买入
-            price: 0, // 委托价格
-            average: 0.0002,
-            cost: 0.0002,
-            amount: 1,//委托数量
-            filled: 1,//成交量
-            remaining: 0,
-            status: 'open'// 订单状态'open' 进行中, 'closed' 已关闭, 'canceled'已取消
-          },
-            { id: 1238528371,//订单id
-              timestamp: 1517992068188,//委托时间
-              datetime: '2018-02-07T08:27:48.188Z',//utc标准时间
-              symbol: 'ICT/BTC',//交易对
-              type: 'market',//订单类型:market市价,limit限价
-              side: 'sell', // sell卖出, buy买入
-              price: 0, // 委托价格
-              average: 0.0002,
-              cost: 0.0002,
-              amount: 1,//委托数量
-              filled: 1,//成交量
-              remaining: 0,
-              status: 'closed'// 订单状态'open' 进行中, 'closed' 已关闭, 'canceled'已取消
-            },
+          //   { id: 1238528370,//订单id
+          //   timestamp: 1517992068188,//委托时间
+          //   datetime: '2018-02-07T08:27:48.188Z',//utc标准时间
+          //   symbol: 'PAY/BTC',//交易对
+          //   type: 'limit',//订单类型:market市价,limit限价
+          //   side: 'sell', // sell卖出, buy买入
+          //   price: 0, // 委托价格
+          //   average: 0.0002,
+          //   cost: 0.0002,
+          //   amount: 1,//委托数量
+          //   filled: 1,//成交量
+          //   remaining: 0,
+          //   status: 'open'// 订单状态'open' 进行中, 'closed' 已关闭, 'canceled'已取消
+          // },
           ]
 
         }
@@ -142,7 +121,12 @@ export default {
       }
     },
     created () {
+      let params = this.$route.params;
+      let symbol = params.symbol.replace("_","/");
+      let bourse = params.bourse;
 
+      let arg = {symbol:symbol, bourse:bourse};
+        this.loadOrders(arg);
     },
     watch: {
         // 如果路由有变化，会再次执行该方法
@@ -153,6 +137,17 @@ export default {
         this.index = index
       },
 
+      loadOrders(arg){
+        this.$store.dispatch("loadOrders",arg).then((data)=>{
+          this.orders = data;
+        }).catch(e=>{
+          this.$vux.toast.show({
+            text: e.message ? e.message : e.error,
+            type:'cancel',
+            width:'15em'
+          });
+        });
+      }
     }
 }
 </script>

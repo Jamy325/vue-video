@@ -1,7 +1,5 @@
 <template>
   <section>
-
-
       <section>
         <title-bar>
           <router-link to="/asset" slot="backBtn">
@@ -22,7 +20,7 @@
 
       <section style="padding-bottom: 5px">
 
-        <section v-for="(data, bourses) in bourses" class="blockBackground" style=" margin: 5px;padding: 10px" @click="onClick(bourses)">
+        <section v-for=" data in bourseStatistics" class="blockBackground" style=" margin: 5px;padding: 10px" @click="onClick(data.bourse)">
 
           <section style=" font-size: 2em; display: flex;flex-direction: row;justify-content: space-between;">
             <span>{{data.title}}</span>
@@ -62,8 +60,6 @@
 <script>
 import vfooter from './common/vfooter.vue'
 import titleBar from './common/titleBar.vue'
-import { url,initHome,getAvator } from '../data/fetchData'
-import { mapActions ,mapState } from 'vuex'
 
 export default {
     name: 'AssetList',
@@ -71,51 +67,16 @@ export default {
         vfooter,
         titleBar
     },
-    data () {
-        return {
-          bourses:{
-          }
-        }
-    },
     computed:{
-
-    },
-    created () {
-      this.initData();
-    },
-    watch: {
-        // 如果路由有变化，会再次执行该方法
-        //'$route': 'initData'
+      bourseStatistics(){
+        let obj = this.$store.getters.bourseStatistics;
+        return Object.values(obj);
+      }
     },
     methods:{
       onClick(bourse){
         console.log(bourse +" on click");
         this.$router.push({name:'assetdetail', params:{bourse:bourse}});
-      },
-      initData(){
-        let userdata = this.$store.state.userdata;
-        if (!userdata) return;
-
-        let assets = userdata.assets || [];
-        for(let e of assets){
-
-            let balance = e.balance || [];
-            let totalCNY = 0;
-            for(let b of balance){
-              totalCNY += b.totalCNY;
-            }
-
-            let earn = totalCNY - e.cost;
-
-            this.bourses[e.bourse] = {
-              title:e.title,
-              cost:e.cost,
-              costCoinType:e.costCoinType,
-              earnings: earn,
-              addPercent: earn / e.cost,
-              total: totalCNY
-            };
-        }
       }
     }
 }
@@ -123,6 +84,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-
 
 </style>

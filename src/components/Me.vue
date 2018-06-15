@@ -52,7 +52,7 @@
             </cell>
         </group>
 
-          <div v-transfer-dom>
+          <div transfer-dom>
             <popup v-model="showShare">
               <div style="padding: 5px" class="blockBackground">
                 <flexbox>
@@ -102,12 +102,11 @@ import { TransferDom, Popup, TabItem,Swiper,SwiperItem,XInput, Selector,Cell, Gr
 
 export default {
     name: 'me',
-    directives: {
+  directives: {
       TransferDom
     },
     components:{
         vfooter,
-      TransferDom,
       Popup,
       TabItem,
       Swiper,
@@ -392,12 +391,3 @@ export default {
 
 </style>
 
-<style lang="less" scoped>
-
-  .blockBackground {
-    .vux-no-group-title{
-      background-color:transparent;
-    }
-  }
-
-</style>

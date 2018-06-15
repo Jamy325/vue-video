@@ -1,7 +1,7 @@
 @import "./define.scss";
 
 html {
-    color: #cccccc;
+    color: #f9f9ef;
     background: $backgroundColor;
     overflow-y: scroll;
     -webkit-text-size-adjust: 100%;
@@ -54,7 +54,6 @@ p,
 pre,
 section,
 td,
-textarea,
 th,
 ul {
     margin: 0;
@@ -64,9 +63,15 @@ ul {
 
 input,
 select,
+option,
 textarea {
+    color: #f9f9ef;
+    background-color: $blockBackgroundColor;
+    border: 1px solid white;
+    margin: 2px;
     font-size: 100%
 }
+
 
 table {
     border-collapse: collapse;

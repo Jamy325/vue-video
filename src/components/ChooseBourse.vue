@@ -11,9 +11,10 @@
 
       </title-bar>
 
-      <section style="background-color: #343132;margin: 2px;padding: 2px">
+      <section style="margin: 2px;padding: 2px" class="blockBackground">
 
-        <cell v-for="b in list" :title="b.label" :link="'/ChooseSymbol/'+b.value" :is-link="false" :key="b.value"> {{b.value}}</cell>
+        <cell v-for="b in bourses" :title="b.value" :link="'/ChooseSymbol/'+b.key" :is-link="false" :key="b.key">
+        </cell>
 
 
       </section>
@@ -50,16 +51,6 @@ export default {
     data () {
         return {
           index:0,
-          list:[
-            {
-              value:"binance", //交易所实际值(id)
-              label:"币安" //交易所显示名称
-            }, {
-
-              value:"huobi", //交易所实际值(id)
-              label:"火币" //交易所显示名称
-            }
-          ]
         }
     },
     computed:{
@@ -70,10 +61,12 @@ export default {
       nextPath(){
         let params = this.$route.params;
         return "/HistoryDelegate/"+ params.bourse+"/"+params.symbol;
-      }
+      },
+
+      ...mapState(["bourses"]),
     },
     created () {
-
+      this.loadBourseData();
     },
     watch: {
         // 如果路由有变化，会再次执行该方法
@@ -82,7 +75,12 @@ export default {
     methods:{
         onClick(bourse){
           console.log("============"+bourse);
+        },
+      loadBourseData(){
+        if (this.bourses.length == 0){
+          this.$store.dispatch("loadBourseData",{});
         }
+      },
     }
 }
 </script>

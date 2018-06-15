@@ -11,9 +11,9 @@
 
       </title-bar>
 
-      <section style="background-color: #343132;margin: 2px;padding: 2px">
+      <section style="margin: 2px;padding: 2px" class="blockBackground">
 
-        <cell v-for="s in symbols" :title="s" :is-link="true" :key="s"></cell>
+        <cell v-for="s in symbolList[this.$route.params.bourse]" :title="s" :is-link="true" :key="s" @click.native="onClick(s)"></cell>
 
 
       </section>
@@ -24,7 +24,7 @@
 <script>
 import vfooter from './common/vfooter.vue'
 import titleBar from './common/titleBar.vue'
-import { url,initHome,getAvator } from '../data/fetchData'
+import { ajax_postAddMarket } from '../data/fetchData'
 import { mapActions ,mapState } from 'vuex'
 import { Tab, TabItem,Swiper,SwiperItem,XInput, Selector,Cell, Group, XTextarea,Flexbox, FlexboxItem,XTable,XButton} from 'vux'
 
@@ -50,7 +50,8 @@ export default {
     data () {
         return {
           index:0,
-          symbols:['BTC/CNY', 'LTC/CNY']
+          bourse:'',
+          symbols:[]
         }
     },
     computed:{
@@ -61,19 +62,47 @@ export default {
       nextPath(){
         let params = this.$route.params;
         return "/HistoryDelegate/"+ params.bourse+"/"+params.symbol;
-      }
+      },
+      ...mapState(['symbolList'])
     },
     created () {
-
+      this.loadSymbolData();
     },
     watch: {
         // 如果路由有变化，会再次执行该方法
         //'$route': 'initData'
     },
     methods:{
-        onClick(bourse){
-          console.log("============"+bourse);
+        onClick(symbol){
+          let bourse = this.$route.params.bourse || "";
+          console.log(`${bourse}=>${symbol}`);
+
+          ajax_postAddMarket({bourse:bourse, symbol:symbol}).then((data)=>{
+            this.$router.push("/market");
+          }).catch(e=>{
+            this.$vux.toast.show({
+              text: e.message ? e.message : e.error,
+              type:'cancel',
+              width:'15em'
+            });
+          });
+        },
+      loadSymbolData(){
+        let bourse = this.$route.params.bourse || "";
+        if (bourse){
+          this.bounce = bourse;
+          let self = this;
+          this.$store.dispatch("loadSymbolList",{bourse}).then(()=>{
+
+          }).catch(e=>{
+            self.$vux.toast.show({
+              text: e.message ? e.message : e.error,
+              type:'cancel',
+              width:'15em'
+            });
+          });
         }
+      }
     }
 }
 </script>

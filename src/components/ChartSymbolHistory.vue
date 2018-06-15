@@ -53,9 +53,9 @@ export default {
         disabled:true
       },
       gradient: [
-        [0, '#F2C587'],
-        [0.5, '#ED7973'],
-        [1, '#8659AF']
+        [0, '#85a9f2'],
+        [0.5, '#5ec1ed'],
+        [1, '#144baf']
       ],
       guideLine:{
         withPoint:false,
