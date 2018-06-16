@@ -1,5 +1,5 @@
 <template>
-    <section class="me" @touchstart="touchStartHideAll">
+    <section class="me">
 
         <vfooter v-if="!showShare"></vfooter>
 
@@ -163,132 +163,26 @@ export default {
         }
     },
     methods:{
-        ...mapActions([
-            'initMeCommentData',
-        ]),
         // 初始化数据
         initData(){
-          //  this.loading = true;
-//            if (localStorage.getItem('user') === null) {
-//                this.$router.push({path:'/login'})
-//            }
-      //      let userName = this.userName
-//            meComment(userName).then(res =>  {
-//                    let data = res.data
-//                    this.initMeCommentData(data)
-//                    this.comments = data
-//            }).catch(e => {
-//                this.loading = false;
-//                this.$toast({
-//                    icon:'fail',
-//                    message:e.message
-//                })
-//            })
-//            // 获取喜欢不喜欢数据
-//            meLike(userName).then(res =>  {
-//                setTimeout(()=>{
-//                    this.loading = false;
-//                },500)
-//                let data = res.data
-//                this.likeLists = data;
-//                this.likeLengthOne = data[0].length
-//                this.likeLengthTwo = data[1].length
-//           })
-//           .catch(e => {
-//                this.loading = false;
-//                this.$toast({
-//                    icon:'fail',
-//                    message:e.message
-//                })
-//           })
-//           getAvator(userName).then(data => {
-//               this.avator = data.avator
-//                localStorage.setItem('avator',data.avator);
-//            }).catch(e=>{
-//                console.log(e)
-//            })
+
         },
         // 登出
         logout () {
-            this.$toast({
-                icon:'success',
-                message:'登出成功'
-            })
-            localStorage.clear()
-            setTimeout(()=>{
-                this.$router.push({path:'/'})
-            },1500)
-        },
-        // 删除自己的评论
-        deleteComment(id,name,index,e){
-            var el = e.currentTarget
-            meDelete(id,name).then(data=>{
-                console.log(data)
-                this.$toast({
-                    icon:'success',
-                    message:'删除成功'
-                })
-                el.parentNode.style.height = 0;
-                el.parentNode.style.borderTop = 'none';
-                this.$nextTick(() => {
-                    setTimeout(() => {
-                        this.comments.splice(index,1)
-                    }, 500);
-                })
-            }).catch(e=>{
-                this.$toast({
-                    icon:'fail',
-                    message:e.message
-                })
-                if(e.code == 404) setTimeout(()=>{this.$router.push({path:'/login'})},1500);localStorage.clear()
 
-            })
+            this.$store.dispatch("logout").then((data)=>{
+              localStorage.clear();
+              this.$router.push({path:'/login'});
+
+            }).catch(e=>{
+              this.$vux.toast.show({
+                text: e.message ? e.message : e.error,
+                type:'cancel',
+                width: '15em'
+              });
+            });
         },
-        // 滑动删除评论
-        touchStart(e){
-            var commentWrap = document.querySelectorAll('.commentWrap')
-            for (var i = 0; i < commentWrap.length; i++) {
-              commentWrap[i].style.transform = 'translate('+ 0 +'rem)';
-              commentWrap[i].style.webkitTransform = 'translate('+ 0 +'rem)';
-            }
-            var start = e.touches[0].pageX/100;
-            this.start = start;
-        },
-        touchStartHideAll(e){
-            if (e.target.className !== 'delete') {
-                var commentWrap = document.querySelectorAll('.commentWrap')
-                for (var i = 0; i < commentWrap.length; i++) {
-                  commentWrap[i].style.transform = 'translate('+ 0 +'rem)';
-                  commentWrap[i].style.webkitTransform = 'translate('+ 0 +'rem)';
-                }
-            }
-        },
-        touchMove (e) {
-            var scroll = e.touches[0].pageX/100 - this.start;
-            this.scroll = scroll
-            if (scroll < -1.5) {
-                scroll = -1.5
-            }else if (scroll > 0) {
-                scroll = 0
-            }
-            // console.log(scroll)
-            var el= e.currentTarget
-            // console.log(el)
-            el.style.transform = 'translate('+ scroll +'rem)';
-            el.style.webkitTransform = 'translate('+ scroll +'rem)';
-        },
-        touchEnd (e) {
-            var el= e.currentTarget
-            if (this.scroll < 0 && this.scroll >= -1) {
-                el.style.transform = 'translate('+ 0 +'rem)';
-                el.style.webkitTransform = 'translate('+ 0 +'rem)';
-            }
-            if (this.scroll < -1) {
-                el.style.transform = 'translate('+ -1.5 +'rem)';
-                el.style.webkitTransform = 'translate('+ -1.5 +'rem)';
-            }
-            this.scroll = 0 ;
-        },
+
         // 上传头像
         upload(){
             var upload = document.querySelector('#upload')
@@ -358,11 +252,8 @@ export default {
             }
             editNameData(this.userName,modelData).then(res=>{
                 console.log('edit',res)
-                   this.$toast({
-                        icon:'success',
-                        message:'修改成功'
-                    })
-                    document.cookie = `token=${res.token};max-age=${30*24*60*60*1000}`
+              this.$vux.toast.show({text:'成功'});
+                    //document.cookie = `token=${res.token};max-age=${30*24*60*60*1000}`
                     console.log(document.cookie)
                    localStorage.setItem('user',modelData)
                    this.userName = modelData

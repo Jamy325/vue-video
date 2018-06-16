@@ -1,56 +1,65 @@
 <template>
     <main>
-        <section class="main_wrap">
-          <section>
-            <router-link to="/login">
-              <div class="icon-back"></div>
-            </router-link>
-          </section>
+      <section>
+        <title-bar>
+          <router-link to="/login" slot="backBtn">
+            <div class="icon-back"></div>
+          </router-link>
+          <h1 slot="title">
+            注册
+          </h1>
+        </title-bar>
+      </section>
 
-            <section class="user_title">
-              <div class="login">注册</div>
-            </section>
+      <section>
+        <group>
+          <x-input placeholder="请输入手机号" v-model="username"  placeholder-align="left"></x-input>
+        </group>
+        <group>
+          <x-input placeholder="请输入密码" type="password" v-model="pwd"  placeholder-align="left"></x-input>
+        </group>
+        <group>
+          <x-input placeholder="再次输入密码" type="password" v-model="rpwd"  placeholder-align="left"></x-input>
+        </group>
 
-            <section class="user">
-                <form  enctype='multipart/form-data'>
-                    <div class="input">
-                        <div class="input_wrap">
-                            <i class="iconfont icon-name"></i>
-                            <input type="text" v-model.trim="username" @keyup.enter="regist" name="username" placeholder="请输入手机号">
-                        </div>
-                        <div class="input_wrap">
-                            <i class="iconfont icon-mima1"></i>
-                            <input type="password" v-model="pwd" @keyup.enter="regist" name="pwd" placeholder="请输入密码">
-                        </div>
-                      <div class="input_wrap">
-                        <i class="iconfont icon-mima1"></i>
-                        <input type="password" v-model="rpwd" @keyup.enter="regist" name="rpwd" placeholder="再次输入密码">
-                      </div>
-                        <div class="input_wrap">
-                            <i class="iconfont icon-yanzhengma1"></i>
-                            <input type="text" v-model="invetecode" @keyup.enter="regist" name="invetecode" placeholder="邀请码(可选)">
-                        </div>
+        <group>
+          <x-input placeholder="邀请码(可选)" v-model="invetecode"  placeholder-align="left"></x-input>
+        </group>
 
-                      <div class="input_wrap">
-                        <i class="iconfont icon-yanzhengma1"></i>
-                        <input type="text" v-model="code" @keyup.enter="regist" name="code" placeholder="验证码">
-                        <img @click="changYzm" :src="url" alt="">
-                      </div>
-                    </div>
-                    <div class="submit" @click="regist">立即注册</div>
-               </form>
-            </section>
-        </section>
+        <group>
+          <x-input  placeholder="验证码"  v-model="code" placeholder-align="left">
+            <img slot="right-full-height" @click="changYzm" :src="url" alt="">
+          </x-input>
+        </group>
+
+        <div style="margin-top: 40px">
+          <x-button type="primary" action-type="button" style="width: 80%;margin: 5px auto 10px auto" @click.native="regist">提交</x-button>
+        </div>
+      </section>
     </main>
 </template>
 
 <script>
-import vfooter from './common/vfooter.vue'
+  import titleBar from './common/titleBar.vue'
 import {mapActions,mapState} from 'vuex'
-import { ajax_regist , yzmChange, checkUser,url } from '../data/fetchData.js'
-export default {
+import { ajax_regist , yzmChange,url } from '../data/fetchData.js'
+  import {Toast, XButton, Tab, TabItem,Swiper,SwiperItem,XInput, Selector,Cell, Group, XTextarea} from 'vux'
+
+  export default {
     name: 'Register',
     components:{
+      titleBar,
+      Toast,
+      Tab,
+      TabItem,
+      Swiper,
+      SwiperItem,
+      XInput,
+      Selector,
+      Cell,
+      Group,
+      XButton,
+      XTextarea
     },
     data () {
         return {
@@ -65,9 +74,6 @@ export default {
         }
     },
     computed:{
-        ...mapState([
-            'userInfo',
-        ]),
     },
     mounted () {
 
@@ -114,11 +120,7 @@ export default {
         },
         // 验证码切换
         changYzm () {
-            yzmChange().then(res=>{
-                this.yzmTest = res.data;
-                this.url = url+'/pic'+'?v='+ (new Date).getTime()
-                console.log('验证码',this.yzmTest)
-            })
+            this.url = url+'/pic'+'?v='+ (new Date).getTime()
         }
     }
 }

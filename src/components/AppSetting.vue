@@ -1,5 +1,5 @@
 <template>
-  <section style="color: #1D2024">
+  <section>
       <title-bar>
         <router-link to="/me" slot="backBtn">
           <div class="icon-back"></div>

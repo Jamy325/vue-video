@@ -1,45 +1,61 @@
 <template>
     <main>
-        <vfooter></vfooter>
-        <section class="main_wrap">
-            <section class="user_title">
-              <div class="login">登陆</div>
-              <router-link class="register" to="/register"> 注册 </router-link>
-            </section>
+      <section>
+        <title-bar>
+          <h1 slot="title">
+            登录
+          </h1>
+          <router-link to="/register" slot="nextBtn">
+            <h2 style="font-size: 1.2em;color: white">注册账号</h2>
+          </router-link>
+        </title-bar>
 
-            <section class="user">
-                <form  enctype='multipart/form-data'>
-                    <div class="input">
-                        <div class="input_wrap">
-                            <i class="iconfont icon-name"></i>
-                            <input type="text" v-model.trim="userName" @keyup.enter="signin" name="userName" placeholder="用户名">
-                        </div>
-                        <div class="input_wrap">
-                            <i class="iconfont icon-mima1"></i>
-                            <input type="password" v-model="password" @keyup.enter="signin" name="password" placeholder="密码">
-                        </div>
-                        <div class="input_wrap">
-                            <i class="iconfont icon-yanzhengma1"></i>
-                            <input type="text" v-model="yzm" @keyup.enter="signin" name="yzm" placeholder="验证码">
-                            <img @click="changYzm" :src="url" alt="">
-                            <!-- <p>点击更换</p> -->
-                        </div>
-                    </div>
-                    <div class="submit" @click="signin">立即登录</div>
-               </form>
-            </section>
-        </section>
+      </section>
+
+      <group>
+        <x-input placeholder="用户名" v-model="userName"  placeholder-align="left"></x-input>
+      </group>
+
+      <group>
+        <x-input type="password" placeholder="密码"  v-model="password" placeholder-align="left"></x-input>
+      </group>
+
+      <group>
+        <x-input  placeholder="验证码"  v-model="yzm" placeholder-align="left">
+          <img slot="right-full-height" @click="changYzm" :src="url" alt="">
+        </x-input>
+      </group>
+
+
+
+      <div style="margin-top: 40px">
+        <x-button type="primary" action-type="button" style="width: 80%;margin: 5px auto 10px auto" @click.native="signin">提交</x-button>
+      </div>
     </main>
 </template>
 
 <script>
-import vfooter from './common/vfooter.vue'
+import titleBar from './common/titleBar.vue'
 import {mapActions,mapState} from 'vuex'
 import { ajax_signin , yzmChange, checkUser,url } from '../data/fetchData.js'
+
+import {Toast, XButton, Tab, TabItem,Swiper,SwiperItem,XInput, Selector,Cell, Group, XTextarea} from 'vux'
+
 export default {
     name: 'login',
     components:{
-        vfooter,
+      titleBar,
+      Toast,
+      Tab,
+      TabItem,
+      Swiper,
+      SwiperItem,
+      XInput,
+      Selector,
+      Cell,
+      Group,
+      XButton,
+      XTextarea
     },
     data () {
         return {
